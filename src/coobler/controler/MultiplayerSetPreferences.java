@@ -8,6 +8,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 
 /**
+ * MultiPlayerSetPreferences class implements MouseListener supports clicked 
+ * or entered buttons in multi player mode. 
  * 
  * @author Dawid
  */
@@ -15,6 +17,10 @@ public class MultiplayerSetPreferences implements MouseListener {
 
     private MultiChoser multiChoser;
 
+    /**
+     * creates new instance of MultiPlayerSetPreferences class
+     * @param aMultiChoser is using to retrive the components from multi player menu
+     */
     public MultiplayerSetPreferences(MultiChoser aMultiChoser) {
         this.multiChoser = aMultiChoser;
         this.multiChoser.getFirstColorChoserButton().addMouseListener(this);

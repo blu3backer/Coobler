@@ -63,11 +63,11 @@ public class SingleChoser extends JPanel{
         
         
         String[] boardsSize = {
-          "4x4","5x5","6x6"  
+          "4x4","5x5","6x6","8x8"  
         };
         this.board = new JComboBox(boardsSize);
         this.okButton = new JLabel(new ImageIcon("grph/okButton.png"));
-        this.boardLabel = new JLabel("PLANSZA");
+        this.boardLabel = new JLabel("BOARD");
         
         this.boardLabel.setBounds(200, 400, 150, 50);
         this.boardLabel.setForeground(Color.WHITE);

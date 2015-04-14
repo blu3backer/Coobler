@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package coobler.controler;
 
 import coobler.view.MainWindow;
@@ -14,7 +10,9 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 
 /**
- *
+ * NavigationHandling class implements MouseListener supports clicked 
+ * or entered buttons in main menu panel. 
+ * 
  * @author Dawid
  */
 public class NavigationHandling implements MouseListener {
@@ -31,7 +29,12 @@ public class NavigationHandling implements MouseListener {
 
     private MultiplayerSetPreferences multiplyPreferences;
     private SinglePlayerSetPreferences singlePreferences;
-
+    /**
+     * creates new instance of NavigationHandling class
+     * 
+     * @param aMenuPanel panel which includes content main panel
+     * @param aWindow object class which shows new window aplication 
+     */
     public NavigationHandling(MenuPanel aMenuPanel, MainWindow aWindow) {
 
         this.mainWindow = aWindow;
@@ -97,6 +100,7 @@ public class NavigationHandling implements MouseListener {
         }
         if (e.getSource() == this.menuPanel.getExitButton()) {
             this.menuPanel.getExitButton().setIcon(this.exitIcon);
+            System.exit(0);
         }
     }
 

@@ -1,6 +1,5 @@
 package coobler.controler;
 
-import coobler.view.MultiChoser;
 import coobler.view.SingleChoser;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -8,14 +7,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 
 /**
- * SinglePlayerSetPreferences class supports clicked or entered buttons in single player mode
+ * SinglePlayerSetPreferences class implements MouseListener supports 
+ * clicked or entered buttons in single player mode.
  *
  * @author Dawid
  */
 public class SinglePlayerSetPreferences implements MouseListener {
 
     private SingleChoser singleChoser;
-
+    /**
+     * creates new instance of SinglePlaterSetPreferences class
+     * @param aSingleChoser is using to retrive the components from single player menu
+     */
     public SinglePlayerSetPreferences(SingleChoser aSingleChoser) {
         this.singleChoser = aSingleChoser;
         this.singleChoser.getFirstColorChoserButton().addMouseListener(this);
