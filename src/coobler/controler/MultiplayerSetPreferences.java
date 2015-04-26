@@ -38,9 +38,10 @@ public class MultiplayerSetPreferences implements MouseListener {
         if (e.getSource() == multiChoser.getFirstColorChoserButton()) {
             multiChoser.getFirstColorChoserButton().setIcon(new ImageIcon("grph/clickedChoseButton.png"));
 
-        } else if (e.getSource() == multiChoser.getSecondColorChoserButton()) {
+        }else if (e.getSource() == multiChoser.getSecondColorChoserButton()) {
             multiChoser.getSecondColorChoserButton().setIcon(new ImageIcon("grph/clickedChoseButton.png"));
-        } else if (e.getSource() == multiChoser.getOkButton()) {
+
+        }else if (e.getSource() == multiChoser.getOkButton()) {
             multiChoser.getOkButton().setIcon(new ImageIcon("grph/clickedOkButton.png"));
         }
     }
@@ -52,11 +53,12 @@ public class MultiplayerSetPreferences implements MouseListener {
             multiChoser.setFirstColor(JColorChooser.showDialog(null, "Color choser", multiChoser.getFirstColor()));
             multiChoser.getShowFirstColorChoserButton().setBackground(multiChoser.getFirstColor());
 
-        } else if (e.getSource() == multiChoser.getSecondColorChoserButton()) {
-            multiChoser.getSecondColorChoserButton().setIcon(new ImageIcon("grph/enteredChoseButton.png"));
+        }else if (e.getSource() == multiChoser.getSecondColorChoserButton()) {
+           multiChoser.getSecondColorChoserButton().setIcon(new ImageIcon("grph/enteredChoseButton.png"));
             multiChoser.setSecondColor(JColorChooser.showDialog(null, "Color choser", multiChoser.getSecondColor()));
             multiChoser.getShowSecondColorChoserButton().setBackground(multiChoser.getSecondColor());
-        } else if (e.getSource() == multiChoser.getOkButton()) {
+
+        }else if (e.getSource() == multiChoser.getOkButton()) {
             multiChoser.getOkButton().setIcon(new ImageIcon("grph/enteredOkButton.png"));
         }
     }
@@ -66,9 +68,10 @@ public class MultiplayerSetPreferences implements MouseListener {
         if (e.getSource() == multiChoser.getFirstColorChoserButton()) {
             multiChoser.getFirstColorChoserButton().setIcon(new ImageIcon("grph/enteredChoseButton.png"));
 
-        } else if (e.getSource() == multiChoser.getSecondColorChoserButton()) {
+        }else if (e.getSource() == multiChoser.getSecondColorChoserButton()) {
             multiChoser.getSecondColorChoserButton().setIcon(new ImageIcon("grph/enteredChoseButton.png"));
-        } else if (e.getSource() == multiChoser.getOkButton()) {
+
+        }else if (e.getSource() == multiChoser.getOkButton()) {
             multiChoser.getOkButton().setIcon(new ImageIcon("grph/enteredOkButton.png"));
         }
     }
@@ -78,9 +81,10 @@ public class MultiplayerSetPreferences implements MouseListener {
         if (e.getSource() == multiChoser.getFirstColorChoserButton()) {
             multiChoser.getFirstColorChoserButton().setIcon(new ImageIcon("grph/choseButton.png"));
 
-        } else if (e.getSource() == multiChoser.getSecondColorChoserButton()) {
+        }else if (e.getSource() == multiChoser.getSecondColorChoserButton()) {
             multiChoser.getSecondColorChoserButton().setIcon(new ImageIcon("grph/choseButton.png"));
-        } else if (e.getSource() == multiChoser.getOkButton()) {
+
+        }else if (e.getSource() == multiChoser.getOkButton()) {
             multiChoser.getOkButton().setIcon(new ImageIcon("grph/okButton.png"));
         }
     }

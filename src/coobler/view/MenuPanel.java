@@ -20,7 +20,7 @@ public class MenuPanel extends JPanel {
 
     private JPanel menuPanel;
 
-    private JLabel sideLabel;
+    
     private JLabel lan;
     private JLabel singlePlayer;
     private JLabel multiPlayer;
@@ -36,7 +36,8 @@ public class MenuPanel extends JPanel {
      * creates a new instance SingleChoser class 
      */
     public MenuPanel() {
-        this.setLayout(new BorderLayout());
+        BorderLayout layout = new BorderLayout(0, 70);
+        this.setLayout(layout);
         this.menuPanel = new JPanel();
         this.menuPanel.setLayout(new GridLayout(4, 1));
         this.menuPanel.setOpaque(false);
@@ -46,7 +47,7 @@ public class MenuPanel extends JPanel {
         this.title.setForeground(Color.white);
         this.title.setHorizontalAlignment(JLabel.CENTER);
         
-        this.sideLabel = new JLabel(new ImageIcon("grph/xxx.png"));
+        
         this.lan = new JLabel(new ImageIcon("grph/lanButton.png"));
         this.singlePlayer = new JLabel(new ImageIcon("grph/singleButton.png"));
         this.multiPlayer = new JLabel(new ImageIcon("grph/multiButton.png"));
@@ -74,7 +75,6 @@ public class MenuPanel extends JPanel {
 
         add(title, BorderLayout.NORTH);
         add(menuPanel, BorderLayout.CENTER);
-        add(sideLabel, BorderLayout.EAST);
         setOpaque(false);
 
     }

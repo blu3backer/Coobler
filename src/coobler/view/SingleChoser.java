@@ -1,144 +1,186 @@
 package coobler.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 
 /**
- * SingleChoser class creates new view which set color and name user
- * in single player mode.
- * 
+ * SingleChoser class creates new view which set color and name user in single
+ * player mode.
+ *
  * @author Dawid
  */
-public class SingleChoser extends JPanel{
+public class SingleChoser extends JPanel {
 
     private JComboBox board;
-    
+
     private JLabel okButton;
     private JLabel colorChoser;
-    
+
     private JTextField playerNameField;
-    
+
     private Color color;
-    
-    private JPanel playerPanel;
-    
+
+    private JPanel mainPanel;
+    private JPanel labelPanel;
+    private JPanel chosePanel;
+    private JPanel colorPanel;
+
     private JLabel showColorChoser;
     private JLabel namePlayerLabel;
     private JLabel colorPlayerLabel;
     private JLabel boardLabel;
-    
+
     /**
-     * creates a new instance SingleChoser class 
+     * creates a new instance SingleChoser class
      */
     public SingleChoser() {
-        this.setLayout(null);
+        
+        this.setLayout(new GridLayout(1, 1, 50, 50));
+        
+        this.colorPanel = new JPanel(new GridLayout(1, 2,20, 10));
+        
+        this.mainPanel = new JPanel(new GridBagLayout());
+        this.chosePanel = new JPanel(new GridLayout(3, 1,20, 100));
+        this.labelPanel = new JPanel(new GridLayout(3, 1,20, 100));
+
         color = Color.white;
-        this.playerPanel = new JPanel(null);     
-        
+
+        /*Panels*/
+        this.mainPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        /*Labels*/
         this.namePlayerLabel = new JLabel("NAME");
-        this.namePlayerLabel.setForeground(Color.WHITE);
-        
+        this.namePlayerLabel.setForeground(Color.WHITE);        
+        this.namePlayerLabel.setFont(new Font("Arial", 1, 30));
+
         this.colorPlayerLabel = new JLabel("COLOR");
-        this.colorPlayerLabel.setForeground(Color.WHITE);         
-        
-        this.colorChoser = new JLabel(new ImageIcon("grph/choseButton.png"));
+        this.colorPlayerLabel.setForeground(Color.WHITE);        
+        this.colorPlayerLabel.setFont(new Font("Arial", 1, 30));
+
+        this.boardLabel = new JLabel("BOARD");
+        this.boardLabel.setForeground(Color.WHITE);
+        this.boardLabel.setFont(new Font("Arial", 1, 30));
         
         this.showColorChoser = new JLabel();
         this.showColorChoser.setBorder(BorderFactory.createLineBorder(new Color(249, 224, 75)));
-        
         this.showColorChoser.setOpaque(true);
         this.showColorChoser.setBackground(this.color);
-        
+
+        /*User name field*/
         this.playerNameField = new JTextField();
         this.playerNameField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        this.playerNameField.setFont(new Font("Arial", 1, 22));   
-        
-        
+        this.playerNameField.setFont(new Font("Arial", 1, 22));
+
+        /*ComboBox*/
         String[] boardsSize = {
-          "4x4","5x5","6x6","8x8"  
+            "4x4", "5x5", "6x6", "8x8"
         };
         this.board = new JComboBox(boardsSize);
+
+        /*Buttons*/
         this.okButton = new JLabel(new ImageIcon("grph/okButton.png"));
-        this.boardLabel = new JLabel("BOARD");
+        this.colorChoser = new JLabel(new ImageIcon("grph/choseButton.png"));
         
-        this.boardLabel.setBounds(200, 400, 150, 50);
-        this.boardLabel.setForeground(Color.WHITE);
-        this.boardLabel.setFont(new Font("Arial", 1, 20));
+        this.namePlayerLabel.setPreferredSize(new Dimension(200, 50));
+        this.colorPlayerLabel.setPreferredSize(new Dimension(200, 50));
+        this.boardLabel.setPreferredSize(new Dimension(200, 50));
         
-        this.board.setBounds(400, 400, 150, 50);
-        this.okButton.setBounds(300, 500, 200, 50);
+        this.namePlayerLabel.setHorizontalAlignment(JLabel.RIGHT);
+        this.colorPlayerLabel.setHorizontalAlignment(JLabel.RIGHT);
+        this.boardLabel.setHorizontalAlignment(JLabel.RIGHT);
         
-        this.namePlayerLabel.setBounds(25, 50, 250, 50);
+        this.playerNameField.setHorizontalAlignment(JLabel.LEFT);
         
-        this.playerNameField.setBounds(25, 100, 250, 50);
+        this.playerNameField.setHorizontalAlignment(JTextField.CENTER);
         
-        this.colorPlayerLabel.setBounds(325, 50, 250, 50);
+
+        this.colorPanel.add(this.colorChoser);
+        this.colorPanel.add(this.showColorChoser);
         
-        this.colorChoser.setBounds(325, 100, 115, 50);
+        GridBagConstraints constraint = new GridBagConstraints();     
+        constraint.weightx = 1.0;
+        constraint.weighty = 1.0;
+        constraint.gridy = 1;
         
-        this.showColorChoser.setBounds(460, 100, 115, 50);
+        this.labelPanel.add(this.namePlayerLabel);
+        this.labelPanel.add(this.colorPlayerLabel);
+        this.labelPanel.add(this.boardLabel);
         
-        this.playerPanel.add(this.namePlayerLabel);
-        this.playerPanel.add(this.playerNameField);
-        this.playerPanel.add(this.colorPlayerLabel);
-        this.playerPanel.add(this.colorChoser);
-        this.playerPanel.add(this.showColorChoser);
+        this.mainPanel.add(this.labelPanel, constraint);
         
-        this.playerPanel.setBounds(100, 100, 600, 250);
+        this.chosePanel.add(this.playerNameField);
+        this.chosePanel.add(this.colorPanel);
+        this.chosePanel.add(this.board);
         
-        Border whiteline = BorderFactory.createLineBorder(Color.white);
-        this.playerPanel.setBorder(BorderFactory.createTitledBorder(whiteline, "FIRST PLAYER", TitledBorder.LEFT, TitledBorder.TOP, new Font("Arial", 1, 20), Color.WHITE));
-        this.playerPanel.setOpaque(false);
+        constraint.gridy = 1;
+        constraint.gridx = 2;
         
-        add(this.playerPanel);
-        add(this.boardLabel);
-        add(this.board);
-        add(this.okButton);
+        this.mainPanel.add(this.chosePanel, constraint);
         
+        constraint.gridy = 2;
+        constraint.gridx = 0;
+        
+        constraint.gridwidth = GridBagConstraints.REMAINDER;
+        this.okButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        this.mainPanel.add(this.okButton,constraint);
+        
+        add(this.mainPanel, constraint);
+        
+        this.mainPanel.setOpaque(false);        
+        this.colorPanel.setOpaque(false);
+        this.chosePanel.setOpaque(false);
+        this.labelPanel.setOpaque(false);
         this.setOpaque(false);
-        
+
     }
+
     /**
-     * 
+     *
      * @return JLabel which shows color picker dialog window
      */
-     public JLabel getFirstColorChoserButton(){
+    public JLabel getFirstColorChoserButton() {
         return this.colorChoser;
     }
-     /**
-      * 
-      * @return JLabel which approve changes
-      */
-    public JLabel getOkButton(){
+
+    /**
+     *
+     * @return JLabel which approve changes
+     */
+    public JLabel getOkButton() {
         return this.okButton;
     }
+
     /**
-     * 
+     *
      * @return JLabel which shows color picker dialog window
      */
-    public JLabel getShowFirstColorChoserButton(){
+    public JLabel getShowFirstColorChoserButton() {
         return this.showColorChoser;
     }
+
     /**
-     * 
+     *
      * @return Color which is selected
      */
-    public Color getFirstColor(){
+    public Color getFirstColor() {
         return this.color;
     }
+
     /**
-     * 
+     *
      * @param aColor set selected color
      */
-    public void setFirstColor(Color aColor){
+    public void setFirstColor(Color aColor) {
         this.color = aColor;
     }
 }
