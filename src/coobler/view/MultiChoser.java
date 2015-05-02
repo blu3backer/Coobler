@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
-  *MultiChoser class creates new view which set color and name user
+  * MultiChoser class creates new view which set color and name user
  * in multi player mode.
  * 
  * @author Dawid
@@ -34,6 +34,8 @@ public class MultiChoser extends JPanel{
 
     private Color firstColor;
     private Color secondColor;
+    
+    private int sizeBoard;
 
     private JPanel mainPanel;
     private JPanel labelPanel;
@@ -49,9 +51,7 @@ public class MultiChoser extends JPanel{
     private JLabel secondColorPlayerLabel;
     
     
-    /**
-     * Creates a new instance of MultiChoser class
-     */
+    
     public MultiChoser() {
         this.setLayout(new GridLayout(1, 1, 50, 50));
         
@@ -62,8 +62,10 @@ public class MultiChoser extends JPanel{
         this.chosePanel = new JPanel(new GridLayout(5, 1,20, 30));
         this.labelPanel = new JPanel(new GridLayout(5, 1,20, 30));
 
-        this.firstColor = Color.white;
-        this.secondColor = Color.white;
+        this.firstColor = Color.BLACK;
+        this.secondColor = Color.RED;
+        
+        this.sizeBoard = 8;
 
         
         this.mainPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
@@ -163,6 +165,11 @@ public class MultiChoser extends JPanel{
         constraint.gridx = 2;
         
         this.mainPanel.add(this.chosePanel, constraint);
+        constraint.gridy = 2;
+        constraint.gridx = 0;
+        
+        constraint.gridwidth = GridBagConstraints.REMAINDER;
+        this.mainPanel.add(this.okButton, constraint);
         
         add(this.mainPanel, constraint);
         
@@ -176,19 +183,22 @@ public class MultiChoser extends JPanel{
     }
    /**
      *
-     * @return JLabel which shows color picker dialog window
+     * @return representing button which calls ColorPicker windows for the first player
      */
     public JLabel getFirstColorChoserButton() {
         return this.firstColorChoser;
     }
-    
+    /**
+     *
+     * @return representing button which calls ColorPicker windows for the second player
+     */
     public JLabel getSecondColorChoserButton() {
         return this.secondColorChoser;
     }
 
     /**
      *
-     * @return JLabel which approve changes
+     * @return representing button which approves all changes
      */
     public JLabel getOkButton() {
         return this.okButton;
@@ -196,37 +206,50 @@ public class MultiChoser extends JPanel{
 
     /**
      *
-     * @return JLabel which shows color picker dialog window
+     * @return showing current selected color of the first player
      */
     public JLabel getShowFirstColorChoserButton() {
         return this.firstShowColorChoser;
     }
-    
+    /**
+     *
+     * @return showing current selected color of the second player
+     */
     public JLabel getShowSecondColorChoserButton() {
         return this.secondShowColorChoser;
     }
 
     /**
      *
-     * @return Color which is selected
+     * @return Color which is chosen for the first player
      */
     public Color getFirstColor() {
         return this.firstColor;
     }
-    
+    /**
+     *
+     * @return Color which is chosen for the second player
+     */
     public Color getSecondColor() {
         return this.secondColor;
     }
 
     /**
      *
-     * @param aColor set selected color
+     * @param aColor sets first player color
      */
     public void setFirstColor(Color aColor) {
         this.firstColor = aColor;
     }
-    
+    /**
+     *
+     * @param aColor sets second player color
+     */
     public void setSecondColor(Color aColor) {
         this.secondColor = aColor;
+    }
+    
+    public int getSizeBoard(){
+        return this.sizeBoard;
     }
 }

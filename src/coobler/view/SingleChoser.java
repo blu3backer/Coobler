@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -41,9 +40,7 @@ public class SingleChoser extends JPanel {
     private JLabel colorPlayerLabel;
     private JLabel boardLabel;
 
-    /**
-     * creates a new instance SingleChoser class
-     */
+    
     public SingleChoser() {
         
         this.setLayout(new GridLayout(1, 1, 50, 50));
@@ -146,7 +143,7 @@ public class SingleChoser extends JPanel {
 
     /**
      *
-     * @return JLabel which shows color picker dialog window
+     * @return representing button which calls ColorPicker windows
      */
     public JLabel getFirstColorChoserButton() {
         return this.colorChoser;
@@ -154,7 +151,7 @@ public class SingleChoser extends JPanel {
 
     /**
      *
-     * @return JLabel which approve changes
+     * @return representing button which approve changes
      */
     public JLabel getOkButton() {
         return this.okButton;
@@ -162,7 +159,7 @@ public class SingleChoser extends JPanel {
 
     /**
      *
-     * @return JLabel which shows color picker dialog window
+     * @return showing current selected color
      */
     public JLabel getShowFirstColorChoserButton() {
         return this.showColorChoser;
@@ -170,7 +167,7 @@ public class SingleChoser extends JPanel {
 
     /**
      *
-     * @return Color which is selected
+     * @return Color which is chosen
      */
     public Color getFirstColor() {
         return this.color;
@@ -178,7 +175,7 @@ public class SingleChoser extends JPanel {
 
     /**
      *
-     * @param aColor set selected color
+     * @param aColor sets player color
      */
     public void setFirstColor(Color aColor) {
         this.color = aColor;

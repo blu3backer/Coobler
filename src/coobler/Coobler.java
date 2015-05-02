@@ -5,6 +5,7 @@ import coobler.view.MainWindow;
 import coobler.view.MenuPanel;
 import javax.swing.JFrame;
 
+
 /**
  *
  * @author Dawid
@@ -22,6 +23,8 @@ public class Coobler {
 
         window.setVisible(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+       
     }
 
 }

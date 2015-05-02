@@ -12,14 +12,12 @@ import javax.swing.JPanel;
 /**
  * MainWindow class creates new window aplication
  *
- * @author Dawid
+ * @author Dawid Frączek
  */
 public class MainWindow extends JFrame{
     private JPanel mainPanel;
     private Dimension screenSize;
-    /**
-     * creates a new instance MainWindow class 
-     */
+   
     public MainWindow(){
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         setLayout(new GridLayout(1, 1));
@@ -27,8 +25,8 @@ public class MainWindow extends JFrame{
         this.mainPanel.setLayout(new GridLayout(1, 1));
         this.mainPanel.setBackground(new Color(0,49,83));
         this.screenSize = toolkit.getScreenSize();
-        this.setSize(800, 600);
-        this.setLocation((this.screenSize.width-800)/2, (this.screenSize.height-600)/2);
+        this.setSize(816, 639);
+        this.setLocation((this.screenSize.width-816)/2, (this.screenSize.height-639)/2);
         add(this.mainPanel);
        
     }

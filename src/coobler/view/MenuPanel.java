@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 /**
  * MenuPanel class creates menu view 
  * 
- * @author Dawid
+ * @author Dawid Frączek
  */
 public class MenuPanel extends JPanel {
 
@@ -32,9 +32,7 @@ public class MenuPanel extends JPanel {
     private JPanel multiPlayerPanel;
     private JPanel exitPanel;
     
-    /**
-     * creates a new instance SingleChoser class 
-     */
+    
     public MenuPanel() {
         BorderLayout layout = new BorderLayout(0, 70);
         this.setLayout(layout);
@@ -80,28 +78,28 @@ public class MenuPanel extends JPanel {
     }
     /**
      * 
-     * @return JLabel which shows single player menu 
+     * @return JLabel representing button which riderects to SinglePlayer menu
      */
     public JLabel getSinglePlayerButton() {
         return this.singlePlayer;
     }
     /**
      * 
-     * @return JLabel which shows multi player menu 
+     * @return JLabel representing button which riderects to MultiPlayer menu
      */
     public JLabel getMultiPlayerButton() {
         return this.multiPlayer;
     }
     /**
      * 
-     * @return JLabel which shows lan game menu 
+     * @return JLabel representing button which riderects to LAN mode menu
      */
     public JLabel getLanModeButton() {
         return this.lan;
     }
     /**
      * 
-     * @return JLabel which close the window
+     * @return JLabel representing exit button 
      */
     public JLabel getExitButton() {
         return this.exit;

@@ -18,10 +18,12 @@ import javax.swing.ImageIcon;
 public class NavigationHandling implements MouseListener {
 
     private MenuPanel menuPanel;
+    
     private ImageIcon singleIcon;
     private ImageIcon multiIcon;
     private ImageIcon lanIcon;
     private ImageIcon exitIcon;
+    
     private MainWindow mainWindow;
 
     private MultiChoser multiChoser;
@@ -29,6 +31,7 @@ public class NavigationHandling implements MouseListener {
 
     private MultiplayerSetPreferences multiplyPreferences;
     private SinglePlayerSetPreferences singlePreferences;
+    
     /**
      * creates new instance of NavigationHandling class
      * 
@@ -45,7 +48,7 @@ public class NavigationHandling implements MouseListener {
         this.menuPanel.getExitButton().addMouseListener(this);
         this.multiChoser = new MultiChoser();
         this.singleChoser = new SingleChoser();
-        this.multiplyPreferences = new MultiplayerSetPreferences(multiChoser);
+        this.multiplyPreferences = new MultiplayerSetPreferences(multiChoser,mainWindow);
         this.singlePreferences = new SinglePlayerSetPreferences(singleChoser);
         this.lanIcon = new ImageIcon("grph/enteredLanButton.png");
         this.singleIcon = new ImageIcon("grph/enteredSingleButton.png");

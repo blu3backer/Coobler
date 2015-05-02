@@ -1,6 +1,8 @@
 
 package coobler.controler;
 
+import coobler.view.Board;
+import coobler.view.MainWindow;
 import coobler.view.MultiChoser;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -16,13 +18,19 @@ import javax.swing.JColorChooser;
 public class MultiplayerSetPreferences implements MouseListener {
 
     private MultiChoser multiChoser;
+    private GameHandling gameHandling;
+    private Board board;
+    private MainWindow mainWindow;
 
     /**
      * creates new instance of MultiPlayerSetPreferences class
      * @param aMultiChoser is using to retrive the components from multi player menu
      */
-    public MultiplayerSetPreferences(MultiChoser aMultiChoser) {
+    public MultiplayerSetPreferences(MultiChoser aMultiChoser,MainWindow aMainWindow) {
         this.multiChoser = aMultiChoser;
+        this.board = new Board(multiChoser);
+        this.mainWindow = aMainWindow;
+        this.gameHandling = new GameHandling(multiChoser,board);
         this.multiChoser.getFirstColorChoserButton().addMouseListener(this);
         this.multiChoser.getSecondColorChoserButton().addMouseListener(this);
         this.multiChoser.getOkButton().addMouseListener(this);
@@ -43,6 +51,7 @@ public class MultiplayerSetPreferences implements MouseListener {
 
         }else if (e.getSource() == multiChoser.getOkButton()) {
             multiChoser.getOkButton().setIcon(new ImageIcon("grph/clickedOkButton.png"));
+            
         }
     }
 
@@ -60,6 +69,11 @@ public class MultiplayerSetPreferences implements MouseListener {
 
         }else if (e.getSource() == multiChoser.getOkButton()) {
             multiChoser.getOkButton().setIcon(new ImageIcon("grph/enteredOkButton.png"));
+            multiChoser.setVisible(false);
+            board.setVisible(true);
+            mainWindow.getPanel().removeAll();            
+            mainWindow.setPanel(board);              
+            mainWindow.repaint();
         }
     }
 
