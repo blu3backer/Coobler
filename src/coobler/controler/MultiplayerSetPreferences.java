@@ -27,10 +27,9 @@ public class MultiplayerSetPreferences implements MouseListener {
      * @param aMultiChoser is using to retrive the components from multi player menu
      */
     public MultiplayerSetPreferences(MultiChoser aMultiChoser,MainWindow aMainWindow) {
-        this.multiChoser = aMultiChoser;
-        this.board = new Board(multiChoser);
+        this.multiChoser = aMultiChoser;        
         this.mainWindow = aMainWindow;
-        this.gameHandling = new GameHandling(multiChoser,board);
+        
         this.multiChoser.getFirstColorChoserButton().addMouseListener(this);
         this.multiChoser.getSecondColorChoserButton().addMouseListener(this);
         this.multiChoser.getOkButton().addMouseListener(this);
@@ -68,6 +67,25 @@ public class MultiplayerSetPreferences implements MouseListener {
             multiChoser.getShowSecondColorChoserButton().setBackground(multiChoser.getSecondColor());
 
         }else if (e.getSource() == multiChoser.getOkButton()) {
+            if(multiChoser.getFirstPlayerNameField().getText().equals("")){
+                multiChoser.setFirstName("UNNAMED");
+            }
+            else{
+               multiChoser.setFirstName(multiChoser.getFirstPlayerNameField().getText()); 
+            }
+            if(multiChoser.getSecondPlayerNameField().getText().equals("")){
+                multiChoser.setSecondName("UNNAMED_TWO");
+            }
+            else{
+               multiChoser.setSecondName(multiChoser.getSecondPlayerNameField().getText());
+            }
+            
+            for(int i = 0;i<5;i++){
+                if(multiChoser.getBoardSize().getSelectedIndex() == i)
+                    multiChoser.setSizeBoard(i+4);
+            }
+            this.board = new Board(multiChoser);
+            this.gameHandling = new GameHandling(multiChoser,board);
             multiChoser.getOkButton().setIcon(new ImageIcon("grph/enteredOkButton.png"));
             multiChoser.setVisible(false);
             board.setVisible(true);
