@@ -3,6 +3,7 @@ package coobler.controler;
 
 import coobler.view.Board;
 import coobler.view.MainWindow;
+import coobler.view.MenuPanel;
 import coobler.view.MultiChoser;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -21,15 +22,16 @@ public class MultiplayerSetPreferences implements MouseListener {
     private GameHandling gameHandling;
     private Board board;
     private MainWindow mainWindow;
+    private MenuPanel menuPanel;
 
     /**
      * creates new instance of MultiPlayerSetPreferences class
      * @param aMultiChoser is using to retrive the components from multi player menu
      */
-    public MultiplayerSetPreferences(MultiChoser aMultiChoser,MainWindow aMainWindow) {
+    public MultiplayerSetPreferences(MultiChoser aMultiChoser,MainWindow aMainWindow,MenuPanel aMenu) {
         this.multiChoser = aMultiChoser;        
         this.mainWindow = aMainWindow;
-        
+        this.menuPanel = aMenu;
         this.multiChoser.getFirstColorChoserButton().addMouseListener(this);
         this.multiChoser.getSecondColorChoserButton().addMouseListener(this);
         this.multiChoser.getOkButton().addMouseListener(this);
@@ -74,7 +76,7 @@ public class MultiplayerSetPreferences implements MouseListener {
                multiChoser.setFirstName(multiChoser.getFirstPlayerNameField().getText()); 
             }
             if(multiChoser.getSecondPlayerNameField().getText().equals("")){
-                multiChoser.setSecondName("UNNAMED_TWO");
+                multiChoser.setSecondName("UNNAMED2");
             }
             else{
                multiChoser.setSecondName(multiChoser.getSecondPlayerNameField().getText());
@@ -85,7 +87,7 @@ public class MultiplayerSetPreferences implements MouseListener {
                     multiChoser.setSizeBoard(i+4);
             }
             this.board = new Board(multiChoser);
-            this.gameHandling = new GameHandling(multiChoser,board);
+            this.gameHandling = new GameHandling(multiChoser,board,this.menuPanel,this.mainWindow);
             multiChoser.getOkButton().setIcon(new ImageIcon("grph/enteredOkButton.png"));
             multiChoser.setVisible(false);
             board.setVisible(true);

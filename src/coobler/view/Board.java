@@ -118,21 +118,21 @@ public class Board extends JPanel {
         this.createBoard();
 
         //**************LABELS**************************
-        this.firstPlayerNameLabel = new JLabel();
-        this.firstPlayerNameLabel.setBackground(this.multiChoser.getFirstColor());
-        this.firstPlayerNameLabel.setOpaque(true);
+        this.firstPlayerNameLabel = new JLabel(multiChoser.getFirstName());
+        this.firstPlayerNameLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.firstPlayerNameLabel.setForeground(Color.WHITE);
+        
+        this.firstPlayerScoreLabel = new JLabel("0");
+        this.firstPlayerScoreLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.firstPlayerScoreLabel.setForeground(Color.WHITE);
 
-        this.firstPlayerScoreLabel = new JLabel();
-        this.firstPlayerScoreLabel.setBackground(this.multiChoser.getFirstColor());
-        this.firstPlayerScoreLabel.setOpaque(true);
-
-        this.secondPlayerNameLabel = new JLabel();
-        this.secondPlayerNameLabel.setBackground(this.multiChoser.getSecondColor());
-        this.secondPlayerNameLabel.setOpaque(true);
-
-        this.secondPlayerScoreLabel = new JLabel();
-        this.secondPlayerScoreLabel.setBackground(this.multiChoser.getSecondColor());
-        this.secondPlayerScoreLabel.setOpaque(true);
+        this.secondPlayerNameLabel = new JLabel(multiChoser.getSecondName());
+        this.secondPlayerNameLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.secondPlayerNameLabel.setForeground(Color.WHITE);
+        
+        this.secondPlayerScoreLabel = new JLabel("0");
+        this.secondPlayerScoreLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.secondPlayerScoreLabel.setForeground(Color.WHITE);
 
         this.createLabelsScoreAndName();
         //*****************PANELS***********************
@@ -287,10 +287,10 @@ public class Board extends JPanel {
 
     public void createPanels() {
 
-        this.firstPlayerNameLabel.setBackground(this.multiChoser.getFirstColor());
-        this.firstPlayerScoreLabel.setBackground(this.multiChoser.getFirstColor());
-        this.secondPlayerNameLabel.setBackground(this.multiChoser.getSecondColor());
-        this.secondPlayerScoreLabel.setBackground(this.multiChoser.getSecondColor());
+        this.firstPlayerNameLabel.setBorder(BorderFactory.createLineBorder(this.multiChoser.getFirstColor(), 2, false));
+        this.firstPlayerScoreLabel.setBorder(BorderFactory.createLineBorder(this.multiChoser.getFirstColor(), 2, false));
+        this.secondPlayerNameLabel.setBorder(BorderFactory.createLineBorder(this.multiChoser.getSecondColor(), 2, false));
+        this.secondPlayerScoreLabel.setBorder(BorderFactory.createLineBorder(this.multiChoser.getSecondColor(), 2, false));
 
         int remainder = (Board.WIDTH_PANEL % 6) + (Board.WIDTH_PANEL % 6) * 5;
         this.getScorePanel().setBounds(0, 0, (int) Math.floor(Board.WIDTH_PANEL / 6), Board.HEIGHT_PANEL);

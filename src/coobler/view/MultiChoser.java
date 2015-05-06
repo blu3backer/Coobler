@@ -36,6 +36,12 @@ public class MultiChoser extends JPanel{
     private Color secondColor;
     
     private int sizeBoard;
+    
+    private String firstName;
+    private String secondName;
+    
+    private int firstPkt;
+    private int secondPkt;
 
     private JPanel mainPanel;
     private JPanel labelPanel;
@@ -65,7 +71,11 @@ public class MultiChoser extends JPanel{
         this.firstColor = Color.BLACK;
         this.secondColor = Color.RED;
         
-        this.sizeBoard = 8;
+        this.sizeBoard = 4;
+        this.firstName = "Unnamed";
+        this.secondName = "Unnamed";
+        this.firstPkt = 0;
+        this.secondPkt = 0;
 
         
         this.mainPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
@@ -112,7 +122,7 @@ public class MultiChoser extends JPanel{
 
         /*ComboBox*/
         String[] boardsSize = {
-            "4x4", "5x5", "6x6", "8x8"
+            "4x4", "5x5", "6x6","7x7", "8x8"
         };
         this.board = new JComboBox(boardsSize);
 
@@ -180,6 +190,27 @@ public class MultiChoser extends JPanel{
         this.labelPanel.setOpaque(false);
         this.setOpaque(false);
         
+    }
+    public String getFirstName(){
+        return this.firstName;
+    }
+    public String getSecondName(){
+        return this.secondName;
+    }
+    public void setFirstName(String aFirstName){
+        this.firstName = aFirstName;
+    }
+    public void setSecondName(String aSecondName){
+        this.secondName = aSecondName;
+    }
+    public JTextField getFirstPlayerNameField(){
+        return this.firstPlayerNameField;
+    }
+    public JTextField getSecondPlayerNameField(){
+        return this.secondPlayerNameField;
+    }
+    public JComboBox getBoardSize(){
+        return this.board;
     }
    /**
      *
@@ -251,5 +282,8 @@ public class MultiChoser extends JPanel{
     
     public int getSizeBoard(){
         return this.sizeBoard;
+    }
+    public void setSizeBoard(int aSizeBoard){
+        this.sizeBoard = aSizeBoard;
     }
 }

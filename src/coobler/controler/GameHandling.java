@@ -5,6 +5,8 @@ import coobler.model.Game;
 import coobler.model.Player;
 import coobler.model.TypeOfField;
 import coobler.view.Board;
+import coobler.view.MainWindow;
+import coobler.view.MenuPanel;
 import coobler.view.MultiChoser;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -19,20 +21,27 @@ import javax.swing.JOptionPane;
 public class GameHandling implements MouseListener {
 
     private MultiChoser multiChoser;
+    private MenuPanel menuPanel;
     private Board board;
     private Game game;
+    private MainWindow mainWindow;
     private Player turn;
+
     private Integer firstPlayerPoints;
     private Integer secondPlayerPoints;
+
     private boolean isTurn;
 
-    public GameHandling(MultiChoser aMultiChoser, Board aBoard) {
+    public GameHandling(MultiChoser aMultiChoser, Board aBoard, MenuPanel aMenu, MainWindow aWindow) {
         this.firstPlayerPoints = 0;
         this.secondPlayerPoints = 0;
         this.turn = Player.FIRST;
         this.multiChoser = aMultiChoser;
+        this.menuPanel = aMenu;
         this.board = aBoard;
         this.game = new Game(aBoard);
+        this.mainWindow = aWindow;
+
         board.addComponentListener(new ComponentListener() {
 
             @Override
@@ -236,14 +245,32 @@ public class GameHandling implements MouseListener {
                     }
                 }
                 if (firstPlayerPoints + secondPlayerPoints >= multiChoser.getSizeBoard() * multiChoser.getSizeBoard()) {
+                    String[] options = {"Repeat", "Main menu", "Exit to OS"};
+                    int choice;
                     if (firstPlayerPoints > secondPlayerPoints) {
-                        JOptionPane.showConfirmDialog(board, "Winner is " + multiChoser.getFirstName());
+                        choice = JOptionPane.showOptionDialog(board, "Winner is " + multiChoser.getFirstName() + "!!!", "WINNER", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     } else if (secondPlayerPoints > firstPlayerPoints) {
-                        JOptionPane.showConfirmDialog(board, "Winner is " + multiChoser.getSecondName());
+                        choice = JOptionPane.showOptionDialog(board, "Winner is " + multiChoser.getSecondName() + "!!!", "WINNER", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     } else {
-                        JOptionPane.showConfirmDialog(board, "THROW");
+                        choice = JOptionPane.showOptionDialog(board, "DRAW!!!", "DRAW", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     }
-                    System.exit(0);
+                    if (choice == 0) {
+                        game.clearBoard();
+                        this.firstPlayerPoints = 0;
+                        this.secondPlayerPoints = 0;
+                    } else if (choice == 2) {
+                        System.exit(0);
+                    } else {
+                        menuPanel.setVisible(true);
+                        board.setVisible(false);
+                        this.firstPlayerPoints = 0;
+                        this.secondPlayerPoints = 0;
+                        mainWindow.getPanel().removeAll();
+                        mainWindow.setPanel(menuPanel);
+                        mainWindow.repaint();
+
+                    }
+
                 }
             }
         }

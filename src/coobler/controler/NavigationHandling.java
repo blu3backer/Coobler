@@ -48,7 +48,7 @@ public class NavigationHandling implements MouseListener {
         this.menuPanel.getExitButton().addMouseListener(this);
         this.multiChoser = new MultiChoser();
         this.singleChoser = new SingleChoser();
-        this.multiplyPreferences = new MultiplayerSetPreferences(multiChoser,mainWindow);
+        this.multiplyPreferences = new MultiplayerSetPreferences(multiChoser,mainWindow,menuPanel);
         this.singlePreferences = new SinglePlayerSetPreferences(singleChoser);
         this.lanIcon = new ImageIcon("grph/enteredLanButton.png");
         this.singleIcon = new ImageIcon("grph/enteredSingleButton.png");
