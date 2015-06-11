@@ -204,7 +204,7 @@ public class LanGameHandling implements MouseListener {
                             }
                             if (isTurn) {
                                 try {
-                                    System.out.println("HAND:" + wFIC.getX() + wFIC.getY() + wFIC.getFillType() + wFIC.getXCenter() + wFIC.getYCenter() + wFIC.getTypeOfField().toString());
+                                    
                                     output.writeInt(2);
                                     output.writeInt(wFIC.getXCenter());
                                     output.writeInt(wFIC.getYCenter());
@@ -290,7 +290,7 @@ public class LanGameHandling implements MouseListener {
                             }
                             if (isTurn) {
                                 try {
-                                    System.out.println("HAND:" + wFIC.getX() + wFIC.getY() + wFIC.getFillType() + wFIC.getXCenter() + wFIC.getYCenter() + wFIC.getTypeOfField().toString());
+                                    
                                     output.writeInt(2);
                                     output.writeInt(wFIC.getXCenter());
                                     output.writeInt(wFIC.getYCenter());
@@ -304,7 +304,7 @@ public class LanGameHandling implements MouseListener {
                                     output.writeObject(wFIC.getTypeOfField());
 
                                 } catch (IOException ex) {
-                                    System.err.println("UPs!!!!!!!!!!!!!!");
+                                    
                                 }
                             }
                             board.revalidate();

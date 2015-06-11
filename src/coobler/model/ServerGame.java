@@ -99,7 +99,6 @@ public class ServerGame extends SwingWorker<Void, ChosenField> {
             this.wFIC.setFillType((FillTypeField) this.input.readObject());
             this.wFIC.setTypeOfField((TypeOfField) this.input.readObject());
 
-            System.out.println("SERVER:" + wFIC.getX() + wFIC.getY() + wFIC.getFillType() + wFIC.getXCenter() + wFIC.getYCenter() + wFIC.getTypeOfField().toString());
             publish(wFIC);
 
         }

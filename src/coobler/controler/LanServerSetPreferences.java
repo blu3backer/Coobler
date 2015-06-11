@@ -79,8 +79,8 @@ public class LanServerSetPreferences implements MouseListener {
                     setBackground(sData.getFirstColor());
         } else if (e.getSource() == this.lanServerChoser.getStartButton()) {
             this.lanServerChoser.getStartButton().setIcon(startButtonImage);
-            if (!lanServerChoser.getFirstPlayerNameField().getText().equals("")) {
-                sData.setFirstNick(lanServerChoser.getFirstPlayerNameField().getText());
+            if (!lanServerChoser.getPlayerNameField().getText().equals("")) {
+                sData.setFirstNick(lanServerChoser.getPlayerNameField().getText());
             }
             sData.setSizeBoard(lanServerChoser.getSizeBoard().getSelectedIndex() + 4);
             serverGame = new ServerGame(loadingView, sData, menuPanel);

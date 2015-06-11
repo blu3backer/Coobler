@@ -125,7 +125,7 @@ public class LanServerChooser extends JPanel {
 
     }
 
-    public JTextField getFirstPlayerNameField() {
+    public JTextField getPlayerNameField() {
         return this.playerNameField;
     }
 

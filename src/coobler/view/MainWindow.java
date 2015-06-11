@@ -23,6 +23,7 @@ public class MainWindow extends JFrame {
         MainWindow.MAIN_PANEL.setLayout(new GridLayout(1, 1));
         MainWindow.MAIN_PANEL.setBackground(new Color(0, 49, 83));
         this.screenSize = toolkit.getScreenSize();
+        this.setMinimumSize(new Dimension(800, 600));
         this.setSize(816, 639);
         this.setLocation((this.screenSize.width - 816) / 2, (this.screenSize.height - 639) / 2);
         add(MainWindow.MAIN_PANEL);
