@@ -1,4 +1,3 @@
-
 package coobler.model;
 
 /**
@@ -6,5 +5,6 @@ package coobler.model;
  * @author Dawid
  */
 public enum Player {
-    FIRST,SECOND
+
+    FIRST, SECOND
 }

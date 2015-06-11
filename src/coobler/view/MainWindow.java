@@ -1,6 +1,4 @@
-
 package coobler.view;
-
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,44 +8,37 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
- * MainWindow class creates new window aplication
- *
  * @author Dawid Frączek
  */
-public class MainWindow extends JFrame{
-    private JPanel mainPanel;
+public class MainWindow extends JFrame {
+
+    public static JPanel MAIN_PANEL;
     private Dimension screenSize;
-   
-    public MainWindow(){
+    private static MainWindow instance = null;
+
+    private MainWindow() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         setLayout(new GridLayout(1, 1));
-        this.mainPanel = new JPanel();
-        this.mainPanel.setLayout(new GridLayout(1, 1));
-        this.mainPanel.setBackground(new Color(0,49,83));
+        MainWindow.MAIN_PANEL = new JPanel();
+        MainWindow.MAIN_PANEL.setLayout(new GridLayout(1, 1));
+        MainWindow.MAIN_PANEL.setBackground(new Color(0, 49, 83));
         this.screenSize = toolkit.getScreenSize();
         this.setSize(816, 639);
-        this.setLocation((this.screenSize.width-816)/2, (this.screenSize.height-639)/2);
-        add(this.mainPanel);
-       
+        this.setLocation((this.screenSize.width - 816) / 2, (this.screenSize.height - 639) / 2);
+        add(MainWindow.MAIN_PANEL);
+
     }
-    /**
-     * 
-     * @param panel add new panel to window
-     */
-    public void setPanel(JPanel panel)
-    {
-        this.mainPanel.add(panel);
-        this.mainPanel.repaint();
-        
+
+    public static MainWindow getInstance() {
+        if (instance == null) {
+            instance = new MainWindow();
+        }
+
+        return instance;
     }
-    /**
-     * 
-     * @return main panel window
-     */
-    public JPanel getPanel()
-    {
-        return this.mainPanel;
-        
+
+    public void closeStreams() {
+
     }
-    
+
 }

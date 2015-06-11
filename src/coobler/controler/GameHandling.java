@@ -1,13 +1,13 @@
 package coobler.controler;
 
-import coobler.model.FillField;
+import coobler.model.FillTypeField;
 import coobler.model.Game;
 import coobler.model.Player;
+import coobler.model.StoreData;
 import coobler.model.TypeOfField;
 import coobler.view.Board;
 import coobler.view.MainWindow;
 import coobler.view.MenuPanel;
-import coobler.view.MultiChoser;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -20,27 +20,21 @@ import javax.swing.JOptionPane;
  */
 public class GameHandling implements MouseListener {
 
-    private MultiChoser multiChoser;
     private MenuPanel menuPanel;
     private Board board;
     private Game game;
-    private MainWindow mainWindow;
     private Player turn;
-
-    private Integer firstPlayerPoints;
-    private Integer secondPlayerPoints;
+    private StoreData sData;
 
     private boolean isTurn;
 
-    public GameHandling(MultiChoser aMultiChoser, Board aBoard, MenuPanel aMenu, MainWindow aWindow) {
-        this.firstPlayerPoints = 0;
-        this.secondPlayerPoints = 0;
+    public GameHandling(StoreData storeData, Board aBoard, MenuPanel aMenu) {
+
         this.turn = Player.FIRST;
-        this.multiChoser = aMultiChoser;
+        this.sData = storeData;
         this.menuPanel = aMenu;
         this.board = aBoard;
         this.game = new Game(aBoard);
-        this.mainWindow = aWindow;
 
         board.addComponentListener(new ComponentListener() {
 
@@ -56,9 +50,6 @@ public class GameHandling implements MouseListener {
                 Board.WIDTH_BOARD_PANEL = 5 * (Board.WIDTH_PANEL / 6);
                 Board.HEIGHT_BOARD_PANEL = Board.HEIGHT_PANEL;
 
-                System.out.println(Board.SPACE_X);
-                System.out.println(Board.SPACE_Y);
-                System.out.println(Board.HEIGHT_BOARD_PANEL);
                 board.createBoard();
                 board.createPanels();
                 board.createLabelsScoreAndName();
@@ -115,58 +106,58 @@ public class GameHandling implements MouseListener {
                 if (i < Board.AMOUNT_FIELD) {
                     if (e.getSource() == board.getVerticalField()[i][j]) {
                         if (this.turn.equals(Player.FIRST)) {
-                            if (!board.getVerticalField()[i][j].getBackground().equals(multiChoser.getFirstColor())
-                                    && !board.getVerticalField()[i][j].getBackground().equals(multiChoser.getSecondColor())) {
+                            if (!board.getVerticalField()[i][j].getBackground().equals(sData.getFirstColor())
+                                    && !board.getVerticalField()[i][j].getBackground().equals(sData.getSecondColor())) {
                                 isTurn = true;
-                                board.getVerticalField()[i][j].setBackground(multiChoser.getFirstColor());
+                                board.getVerticalField()[i][j].setBackground(sData.getFirstColor());
                             } else {
                                 isTurn = false;
                             }
                         } else {
-                            if (!board.getVerticalField()[i][j].getBackground().equals(multiChoser.getFirstColor())
-                                    && !board.getVerticalField()[i][j].getBackground().equals(multiChoser.getSecondColor())) {
+                            if (!board.getVerticalField()[i][j].getBackground().equals(sData.getFirstColor())
+                                    && !board.getVerticalField()[i][j].getBackground().equals(sData.getSecondColor())) {
                                 isTurn = true;
-                                board.getVerticalField()[i][j].setBackground(multiChoser.getSecondColor());
+                                board.getVerticalField()[i][j].setBackground(sData.getSecondColor());
                             } else {
                                 isTurn = false;
                             }
 
                         }
 
-                        if (this.game.checkField(i, j, TypeOfField.VERTICAL).equals(FillField.CURRENT) && isTurn) {
+                        if (this.game.checkField(i, j, TypeOfField.VERTICAL).equals(FillTypeField.CURRENT) && isTurn) {
                             if (this.turn.equals(Player.FIRST)) {
-                                firstPlayerPoints = firstPlayerPoints + 1;
-                                board.getFirstPlayerScoreLabel().setText(firstPlayerPoints.toString());
-                                board.getCenterField()[i][j].setBackground(multiChoser.getFirstColor());
+                                this.sData.setFirstPlayerPoint(this.sData.getFirstPlayerPoint() + 1);
+                                board.getFirstPlayerScoreLabel().setText(this.sData.getFirstPlayerPoint().toString());
+                                board.getCenterField()[i][j].setBackground(sData.getFirstColor());
                             } else {
-                                secondPlayerPoints = secondPlayerPoints + 1;
-                                board.getSecondPlayerScoreLabel().setText(secondPlayerPoints.toString());
-                                board.getCenterField()[i][j].setBackground(multiChoser.getSecondColor());
+                                this.sData.setSecondPlayerPoint(this.sData.getSecondPlayerPoint() + 1);
+                                board.getSecondPlayerScoreLabel().setText(this.sData.getSecondPlayerPoint().toString());
+                                board.getCenterField()[i][j].setBackground(sData.getSecondColor());
                             }
-                        } else if (this.game.checkField(i, j, TypeOfField.VERTICAL).equals(FillField.PREVIOUS) && isTurn) {
+                        } else if (this.game.checkField(i, j, TypeOfField.VERTICAL).equals(FillTypeField.PREVIOUS) && isTurn) {
                             if (this.turn.equals(Player.FIRST)) {
-                                firstPlayerPoints = firstPlayerPoints + 1;
-                                board.getFirstPlayerScoreLabel().setText(firstPlayerPoints.toString());
-                                board.getCenterField()[i][j - 1].setBackground(multiChoser.getFirstColor());
+                                this.sData.setFirstPlayerPoint(this.sData.getFirstPlayerPoint() + 1);
+                                board.getFirstPlayerScoreLabel().setText(this.sData.getFirstPlayerPoint().toString());
+                                board.getCenterField()[i][j - 1].setBackground(sData.getFirstColor());
                             } else {
-                                secondPlayerPoints = secondPlayerPoints + 1;
-                                board.getSecondPlayerScoreLabel().setText(secondPlayerPoints.toString());
-                                board.getCenterField()[i][j - 1].setBackground(multiChoser.getSecondColor());
+                                this.sData.setSecondPlayerPoint(this.sData.getSecondPlayerPoint() + 1);
+                                board.getSecondPlayerScoreLabel().setText(this.sData.getSecondPlayerPoint().toString());
+                                board.getCenterField()[i][j - 1].setBackground(sData.getSecondColor());
                             }
 
-                        } else if (this.game.checkField(i, j, TypeOfField.VERTICAL).equals(FillField.BOTH) && isTurn) {
+                        } else if (this.game.checkField(i, j, TypeOfField.VERTICAL).equals(FillTypeField.BOTH) && isTurn) {
                             if (this.turn.equals(Player.FIRST)) {
-                                firstPlayerPoints = firstPlayerPoints + 2;
-                                board.getFirstPlayerScoreLabel().setText(firstPlayerPoints.toString());
+                                this.sData.setFirstPlayerPoint(this.sData.getFirstPlayerPoint() + 2);
+                                board.getFirstPlayerScoreLabel().setText(this.sData.getFirstPlayerPoint().toString());
 
-                                board.getCenterField()[i][j].setBackground(multiChoser.getFirstColor());
-                                board.getCenterField()[i][j - 1].setBackground(multiChoser.getFirstColor());
+                                board.getCenterField()[i][j].setBackground(sData.getFirstColor());
+                                board.getCenterField()[i][j - 1].setBackground(sData.getFirstColor());
                             } else {
-                                secondPlayerPoints = secondPlayerPoints + 2;
-                                board.getSecondPlayerScoreLabel().setText(secondPlayerPoints.toString());
+                                this.sData.setSecondPlayerPoint(this.sData.getSecondPlayerPoint() + 2);
+                                board.getSecondPlayerScoreLabel().setText(this.sData.getSecondPlayerPoint().toString());
 
-                                board.getCenterField()[i][j].setBackground(multiChoser.getSecondColor());
-                                board.getCenterField()[i][j - 1].setBackground(multiChoser.getSecondColor());
+                                board.getCenterField()[i][j].setBackground(sData.getSecondColor());
+                                board.getCenterField()[i][j - 1].setBackground(sData.getSecondColor());
                             }
                         } else {
                             if (this.turn.equals(Player.FIRST) && isTurn) {
@@ -182,56 +173,56 @@ public class GameHandling implements MouseListener {
                 if (j < Board.AMOUNT_FIELD) {
                     if (e.getSource() == board.getHorizontalField()[i][j]) {
                         if (this.turn.equals(Player.FIRST)) {
-                            if (!board.getHorizontalField()[i][j].getBackground().equals(multiChoser.getFirstColor())
-                                    && !board.getHorizontalField()[i][j].getBackground().equals(multiChoser.getSecondColor())) {
+                            if (!board.getHorizontalField()[i][j].getBackground().equals(sData.getFirstColor())
+                                    && !board.getHorizontalField()[i][j].getBackground().equals(sData.getSecondColor())) {
                                 isTurn = true;
-                                board.getHorizontalField()[i][j].setBackground(multiChoser.getFirstColor());
+                                board.getHorizontalField()[i][j].setBackground(sData.getFirstColor());
                             } else {
                                 isTurn = false;
                             }
                         } else {
-                            if (!board.getHorizontalField()[i][j].getBackground().equals(multiChoser.getFirstColor())
-                                    && !board.getHorizontalField()[i][j].getBackground().equals(multiChoser.getSecondColor())) {
+                            if (!board.getHorizontalField()[i][j].getBackground().equals(sData.getFirstColor())
+                                    && !board.getHorizontalField()[i][j].getBackground().equals(sData.getSecondColor())) {
                                 isTurn = true;
-                                board.getHorizontalField()[i][j].setBackground(multiChoser.getSecondColor());
+                                board.getHorizontalField()[i][j].setBackground(sData.getSecondColor());
                             } else {
                                 isTurn = false;
                             }
 
                         }
-                        if (this.game.checkField(i, j, TypeOfField.HORIZONTAL).equals(FillField.CURRENT) && isTurn) {
+                        if (this.game.checkField(i, j, TypeOfField.HORIZONTAL).equals(FillTypeField.CURRENT) && isTurn) {
                             if (this.turn.equals(Player.FIRST)) {
-                                firstPlayerPoints = firstPlayerPoints + 1;
-                                board.getFirstPlayerScoreLabel().setText(firstPlayerPoints.toString());
-                                board.getCenterField()[i][j].setBackground(multiChoser.getFirstColor());
+                                this.sData.setFirstPlayerPoint(this.sData.getFirstPlayerPoint() + 1);
+                                board.getFirstPlayerScoreLabel().setText(this.sData.getFirstPlayerPoint().toString());
+                                board.getCenterField()[i][j].setBackground(sData.getFirstColor());
                             } else {
-                                secondPlayerPoints = secondPlayerPoints + 1;
-                                board.getSecondPlayerScoreLabel().setText(secondPlayerPoints.toString());
-                                board.getCenterField()[i][j].setBackground(multiChoser.getSecondColor());
+                                this.sData.setSecondPlayerPoint(this.sData.getSecondPlayerPoint() + 1);
+                                board.getSecondPlayerScoreLabel().setText(this.sData.getSecondPlayerPoint().toString());
+                                board.getCenterField()[i][j].setBackground(sData.getSecondColor());
                             }
-                        } else if (this.game.checkField(i, j, TypeOfField.HORIZONTAL).equals(FillField.PREVIOUS) && isTurn) {
+                        } else if (this.game.checkField(i, j, TypeOfField.HORIZONTAL).equals(FillTypeField.PREVIOUS) && isTurn) {
                             if (this.turn.equals(Player.FIRST)) {
-                                firstPlayerPoints = firstPlayerPoints + 1;
-                                board.getFirstPlayerScoreLabel().setText(firstPlayerPoints.toString());
-                                board.getCenterField()[i - 1][j].setBackground(multiChoser.getFirstColor());
+                                this.sData.setFirstPlayerPoint(this.sData.getFirstPlayerPoint() + 1);
+                                board.getFirstPlayerScoreLabel().setText(this.sData.getFirstPlayerPoint().toString());
+                                board.getCenterField()[i - 1][j].setBackground(sData.getFirstColor());
                             } else {
-                                secondPlayerPoints = secondPlayerPoints + 1;
-                                board.getSecondPlayerScoreLabel().setText(secondPlayerPoints.toString());
-                                board.getCenterField()[i - 1][j].setBackground(multiChoser.getSecondColor());
+                                this.sData.setSecondPlayerPoint(this.sData.getSecondPlayerPoint() + 1);
+                                board.getSecondPlayerScoreLabel().setText(this.sData.getSecondPlayerPoint().toString());
+                                board.getCenterField()[i - 1][j].setBackground(sData.getSecondColor());
                             }
-                        } else if (this.game.checkField(i, j, TypeOfField.HORIZONTAL).equals(FillField.BOTH) && isTurn) {
+                        } else if (this.game.checkField(i, j, TypeOfField.HORIZONTAL).equals(FillTypeField.BOTH) && isTurn) {
                             if (this.turn.equals(Player.FIRST)) {
-                                firstPlayerPoints = firstPlayerPoints + 2;
-                                board.getFirstPlayerScoreLabel().setText(firstPlayerPoints.toString());
+                                this.sData.setFirstPlayerPoint(this.sData.getFirstPlayerPoint() + 2);
+                                board.getFirstPlayerScoreLabel().setText(this.sData.getFirstPlayerPoint().toString());
 
-                                board.getCenterField()[i][j].setBackground(multiChoser.getFirstColor());
-                                board.getCenterField()[i - 1][j].setBackground(multiChoser.getFirstColor());
+                                board.getCenterField()[i][j].setBackground(sData.getFirstColor());
+                                board.getCenterField()[i - 1][j].setBackground(sData.getFirstColor());
                             } else {
-                                secondPlayerPoints = secondPlayerPoints + 2;
-                                board.getSecondPlayerScoreLabel().setText(secondPlayerPoints.toString());
+                                this.sData.setSecondPlayerPoint(this.sData.getSecondPlayerPoint() + 2);
+                                board.getSecondPlayerScoreLabel().setText(this.sData.getSecondPlayerPoint().toString());
 
-                                board.getCenterField()[i][j].setBackground(multiChoser.getSecondColor());
-                                board.getCenterField()[i - 1][j].setBackground(multiChoser.getSecondColor());
+                                board.getCenterField()[i][j].setBackground(sData.getSecondColor());
+                                board.getCenterField()[i - 1][j].setBackground(sData.getSecondColor());
                             }
                         } else {
                             if (this.turn.equals(Player.FIRST) && isTurn) {
@@ -244,30 +235,34 @@ public class GameHandling implements MouseListener {
 
                     }
                 }
-                if (firstPlayerPoints + secondPlayerPoints >= multiChoser.getSizeBoard() * multiChoser.getSizeBoard()) {
+                if (this.sData.getFirstPlayerPoint() + this.sData.getSecondPlayerPoint() >= sData.getSizeBoard() * sData.getSizeBoard()) {
                     String[] options = {"Repeat", "Main menu", "Exit to OS"};
                     int choice;
-                    if (firstPlayerPoints > secondPlayerPoints) {
-                        choice = JOptionPane.showOptionDialog(board, "Winner is " + multiChoser.getFirstName() + "!!!", "WINNER", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                    } else if (secondPlayerPoints > firstPlayerPoints) {
-                        choice = JOptionPane.showOptionDialog(board, "Winner is " + multiChoser.getSecondName() + "!!!", "WINNER", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (this.sData.getFirstPlayerPoint() > this.sData.getSecondPlayerPoint()) {
+                        choice = JOptionPane.showOptionDialog(board, "Winner is " + sData.getFirstNick() + "!!!", "WINNER", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    } else if (this.sData.getSecondPlayerPoint() > this.sData.getFirstPlayerPoint()) {
+                        choice = JOptionPane.showOptionDialog(board, "Winner is " + sData.getSecondNick() + "!!!", "WINNER", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     } else {
                         choice = JOptionPane.showOptionDialog(board, "DRAW!!!", "DRAW", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     }
                     if (choice == 0) {
                         game.clearBoard();
-                        this.firstPlayerPoints = 0;
-                        this.secondPlayerPoints = 0;
+                        this.sData.setFirstPlayerPoint(0);
+                        this.sData.setSecondPlayerPoint(0);
+                        MainWindow.MAIN_PANEL.removeAll();
+                        MainWindow.MAIN_PANEL.add(board);
+                        MainWindow.MAIN_PANEL.repaint();
                     } else if (choice == 2) {
                         System.exit(0);
                     } else {
+                        game.clearBoard();
                         menuPanel.setVisible(true);
                         board.setVisible(false);
-                        this.firstPlayerPoints = 0;
-                        this.secondPlayerPoints = 0;
-                        mainWindow.getPanel().removeAll();
-                        mainWindow.setPanel(menuPanel);
-                        mainWindow.repaint();
+                        this.sData.setFirstPlayerPoint(0);
+                        this.sData.setSecondPlayerPoint(0);
+                        MainWindow.MAIN_PANEL.removeAll();
+                        MainWindow.MAIN_PANEL.add(menuPanel);
+                        MainWindow.MAIN_PANEL.repaint();
 
                     }
 
