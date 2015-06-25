@@ -7,8 +7,8 @@ import coobler.model.Player;
 import coobler.model.StoreData;
 import coobler.model.TypeOfField;
 import coobler.model.ChosenField;
+import coobler.model.UsefulFeatures;
 import coobler.view.Board;
-import coobler.view.MainWindow;
 import coobler.view.MenuPanel;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -26,6 +26,9 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
+ * The LanGameHandling is a class which receives user input and call appropriate
+ * methods which change a board state in LAN game. For this purpose implements
+ * MouseListener interface.
  *
  * @author Dawid
  */
@@ -46,6 +49,23 @@ public class LanGameHandling implements MouseListener {
 
     public static boolean LOCK;
 
+    /**
+     *
+     * @param storeData instance of class which stores data game
+     * @param aMenu instance of class which shows main menu
+     * @param aBoard game board
+     * @param aPlayer enum type which represents current user
+     * @param out instance of ObjectOutputStream which is used to close the
+     * stream in WindowsListener
+     * @param wf this instance of class stores data which is used to exchange
+     * data in network game
+     * @param in instance of ObjectInputStream which is used to close the stream
+     * in WindowsListener
+     * @param sSock instance of ServerSocket which is used to close the server
+     * socket in WindowsListener
+     * @param sock instance of Socket which is used to close the socket in
+     * WindowsListener
+     */
     public LanGameHandling(StoreData storeData, MenuPanel aMenu, Board aBoard, Player aPlayer, ObjectOutputStream out, ChosenField wf, ObjectInputStream in, ServerSocket sSock, Socket sock) {
         this.wFIC = wf;
         this.sData = storeData;
@@ -204,7 +224,7 @@ public class LanGameHandling implements MouseListener {
                             }
                             if (isTurn) {
                                 try {
-                                    
+
                                     output.writeInt(2);
                                     output.writeInt(wFIC.getXCenter());
                                     output.writeInt(wFIC.getYCenter());
@@ -290,7 +310,7 @@ public class LanGameHandling implements MouseListener {
                             }
                             if (isTurn) {
                                 try {
-                                    
+
                                     output.writeInt(2);
                                     output.writeInt(wFIC.getXCenter());
                                     output.writeInt(wFIC.getYCenter());
@@ -304,7 +324,7 @@ public class LanGameHandling implements MouseListener {
                                     output.writeObject(wFIC.getTypeOfField());
 
                                 } catch (IOException ex) {
-                                    
+
                                 }
                             }
                             board.revalidate();
@@ -326,38 +346,33 @@ public class LanGameHandling implements MouseListener {
                             game.clearBoard();
                             this.sData.setFirstPlayerPoint(0);
                             this.sData.setSecondPlayerPoint(0);
-                            MainWindow.MAIN_PANEL.removeAll();
-                            MainWindow.MAIN_PANEL.add(board);
-                            MainWindow.MAIN_PANEL.repaint();
+                            UsefulFeatures.update(board);
+
                         } else if (choice == 2) {
 
                             try {
-                                server.close();
+
                                 socket.close();
                                 input.close();
                                 output.close();
                             } catch (IOException ex) {
-                                Logger.getLogger(LanGameHandling.class.getName()).log(Level.SEVERE, null, ex);
+                                JOptionPane.showMessageDialog(menuPanel, "The problem of closure socket or streams");
                             }
 
                             System.exit(0);
                         } else {
                             try {
-                                server.close();
+
                                 socket.close();
                                 input.close();
                                 output.close();
                             } catch (IOException ex) {
-                                Logger.getLogger(LanGameHandling.class.getName()).log(Level.SEVERE, null, ex);
+                                JOptionPane.showMessageDialog(menuPanel, "The problem of closure socket or streams");
                             }
                             game.clearBoard();
-                            menuPanel.setVisible(true);
-                            board.setVisible(false);
                             this.sData.setFirstPlayerPoint(0);
                             this.sData.setSecondPlayerPoint(0);
-                            MainWindow.MAIN_PANEL.removeAll();
-                            MainWindow.MAIN_PANEL.add(menuPanel);
-                            MainWindow.MAIN_PANEL.repaint();
+                            UsefulFeatures.update(menuPanel, board);
 
                         }
 
@@ -377,6 +392,10 @@ public class LanGameHandling implements MouseListener {
 
     }
 
+    /**
+     *
+     * @return object which controls movements of players
+     */
     public Game getGame() {
         return this.game;
     }

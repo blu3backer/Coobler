@@ -1,6 +1,7 @@
 package coobler.model;
 
 /**
+ * Data type which represent type of field
  *
  * @author Dawid
  */

@@ -15,6 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
+ * LanServerChooser class extends JPanel and display JTextField which allows 
+ * write a player name, JComboBox which permits chose a board size and two JButtons 
+ * which allows to chose player color and join to the LAN game
+ * 
  * @author Dawid
  */
 public class LanServerChooser extends JPanel {
@@ -36,6 +40,9 @@ public class LanServerChooser extends JPanel {
     private JLabel namePlayerLabel;
     private JLabel colorPlayerLabel;
 
+    /**
+     * Creates a new instance of LanServerChooser class
+     */
     public LanServerChooser() {
         this.setLayout(new GridLayout(1, 1, 50, 50));
 
@@ -69,7 +76,7 @@ public class LanServerChooser extends JPanel {
         this.playerNameField.setFont(new Font("Arial", 1, 22));
 
         String[] boardsSize = {
-            "4x4", "5x5", "6x6", "7x7", "8x8"
+            "3x3","4x4", "5x5", "6x6", "7x7", "8x8", "9x9","10x10","11x11","12x12"
         };
         this.board = new JComboBox(boardsSize);
 
@@ -124,27 +131,42 @@ public class LanServerChooser extends JPanel {
         this.setOpaque(false);
 
     }
-
+    /**
+     * 
+     * @return JTextField which serves to the writing player name 
+     */
     public JTextField getPlayerNameField() {
         return this.playerNameField;
     }
 
-    public JComboBox getBoardSize() {
-        return this.board;
-    }
-
+    /**
+     * 
+     * @return JLabel which represents a button which call a color choser
+     */
     public JLabel getColorChoserButton() {
         return this.colorChoser;
     }
 
+    /**
+     * 
+     * @return JLabel which represents a button which allows to starting the game
+     */
     public JLabel getStartButton() {
         return this.startButton;
     }
 
+    /**
+     * 
+     * @return label which shows current color player
+     */
     public JLabel getShowColorChoserButton() {
         return this.showColorChoser;
     }
 
+    /**
+     * 
+     * @return JComboBox which allows chose board size
+     */
     public JComboBox getSizeBoard() {
         return this.board;
     }

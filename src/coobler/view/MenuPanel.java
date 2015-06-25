@@ -1,17 +1,16 @@
 package coobler.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * @author Dawid Frączek
+ * 
+ * 
+ * @author Dawid
  */
 public class MenuPanel extends JPanel {
 
@@ -24,50 +23,51 @@ public class MenuPanel extends JPanel {
     private JLabel multiPlayer;
     private JLabel exit;
 
+    
     private JPanel lanPanel;
-    private JPanel singlePlayerPanel;
+    private JPanel joinPanel;
     private JPanel multiPlayerPanel;
     private JPanel exitPanel;
 
-    public MenuPanel() throws MalformedURLException {
+    /**
+     * 
+     */
+    public MenuPanel() {
         BorderLayout layout = new BorderLayout(0, 70);
         this.setLayout(layout);
         this.menuPanel = new JPanel();
         this.menuPanel.setLayout(new GridLayout(4, 1));
         this.menuPanel.setOpaque(false);
 
-        this.title = new JLabel("COOBLER");
-        this.title.setFont(new Font("Bauhaus 93", 1, 46));
-        this.title.setForeground(Color.white);
+        this.title = new JLabel(this.changeImage("grph/title.png"));
         this.title.setHorizontalAlignment(JLabel.CENTER);
 
-        URL lanURL = getClass().getResource("grph/lanButton.png");
-        this.lan = new JLabel(new ImageIcon(lanURL));
-        URL joinURL = getClass().getResource("grph/joinButton.png");
-        this.join = new JLabel(new ImageIcon(joinURL));
-        URL multiURL = getClass().getResource("grph/multiButton.png");
-        this.multiPlayer = new JLabel(new ImageIcon(multiURL));
-        URL exitURL = getClass().getResource("grph/exitButton.png");
-        this.exit = new JLabel(new ImageIcon(exitURL));
+        
+        
+        this.lan = new JLabel(this.changeImage("grph/lanButton.png"));
+        this.join = new JLabel(this.changeImage("grph/joinButton.png"));
+        this.multiPlayer = new JLabel(this.changeImage("grph/multiButton.png"));
+        this.exit = new JLabel(this.changeImage("grph/exitButton.png"));
 
-        this.singlePlayerPanel = new JPanel();
+       
         this.multiPlayerPanel = new JPanel();
         this.lanPanel = new JPanel();
+        this.joinPanel = new JPanel();
         this.exitPanel = new JPanel();
 
-        this.singlePlayerPanel.setOpaque(false);
         this.multiPlayerPanel.setOpaque(false);
         this.lanPanel.setOpaque(false);
         this.exitPanel.setOpaque(false);
+        this.joinPanel.setOpaque(false);
 
         this.multiPlayerPanel.add(this.multiPlayer);
         this.lanPanel.add(this.lan);
-        this.singlePlayerPanel.add(this.join);
+        this.joinPanel.add(this.join);
         this.exitPanel.add(this.exit);
 
         this.menuPanel.add(this.multiPlayerPanel);
         this.menuPanel.add(this.lanPanel);
-        this.menuPanel.add(this.singlePlayerPanel);
+        this.menuPanel.add(this.joinPanel);
         this.menuPanel.add(this.exitPanel);
 
         add(title, BorderLayout.NORTH);
@@ -76,19 +76,47 @@ public class MenuPanel extends JPanel {
 
     }
 
+    /**
+     * 
+     * @return button which allows to display LanClientChoser panel
+     */
     public JLabel getJoinButton() {
         return this.join;
     }
 
+    /**
+     * 
+     * @return button which allows to display MultiplayerChooser panel
+     */
     public JLabel getMultiPlayerButton() {
         return this.multiPlayer;
     }
 
+    /**
+     * 
+     * @return button which allows to display LanServerChoser panel
+     */
     public JLabel getLanModeButton() {
         return this.lan;
     }
 
+    /**
+     * 
+     * @return button which allows to exit the game
+     */
     public JLabel getExitButton() {
         return this.exit;
     }
+
+    /**
+     *
+     * @param path path of the desired resource
+     * @return ImageIcon contain image of button
+     */
+    public final ImageIcon changeImage(String path) {
+        URL url = getClass().getResource(path);
+        ImageIcon image = new ImageIcon(url);
+        return image;
+    }
+
 }

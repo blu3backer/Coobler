@@ -14,8 +14,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
+ * LanClientChoser class extends JPanel and display JTextField which allows 
+ * write a player name and two JButtons which allows to chose player color and 
+ * join to the LAN game
  *
- * @author Dawid
+ * @author Dawid 
  */
 public class LanClientChooser extends JPanel {
 
@@ -109,18 +112,34 @@ public class LanClientChooser extends JPanel {
 
     }
 
+    /**
+     * 
+     * @return field which serves to the writing player name
+     */
     public JTextField getPlayerNameField() {
         return this.playerNameField;
     }
 
+    /**
+     * 
+     * @return jlabel which represent button which calls color chooser
+     */
     public JLabel getColorChoserButton() {
         return this.colorChoser;
     }
 
+    /**
+     * 
+     * @return jlabel which represent button which allows to join to the game
+     */
     public JLabel getJoinButton() {
         return this.joinButton;
     }
 
+    /**
+     * 
+     * @return show curren color
+     */
     public JLabel getShowColorChoserButton() {
         return this.showColorChoser;
     }

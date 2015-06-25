@@ -3,7 +3,6 @@ package coobler.model;
 import coobler.controler.LanGameHandling;
 import coobler.view.Board;
 import coobler.view.LanClientChooser;
-import coobler.view.MainWindow;
 import coobler.view.MenuPanel;
 import java.awt.Color;
 import java.io.BufferedInputStream;
@@ -19,6 +18,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 /**
+ * ClientGame class which handle incoming and outgoing data in LAN game on the
+ * side of the player who joined the game. This class extends SwingWorker class
+ * and work in other thread.
  *
  * @author Dawid
  */
@@ -36,19 +38,26 @@ public class ClientGame extends SwingWorker<Void, ChosenField> {
     private LanGameHandling gameHandling;
     private ChosenField wFIC;
 
-    private boolean loopInterupted;
+    boolean interruption;
 
-    public ClientGame(LanClientChooser aClientChooser, StoreData storeData, MenuPanel aMenuPanel) throws ClassNotFoundException {
+    /**
+     *
+     * @param aClientChooser panel which allows to set player settings
+     * @param storeData player data and size of board
+     * @param aMenuPanel main menu panel
+     */
+    public ClientGame(LanClientChooser aClientChooser, StoreData storeData, MenuPanel aMenuPanel) {
         wFIC = new ChosenField();
         sData = storeData;
         this.clientChooser = aClientChooser;
-        loopInterupted = true;
         this.menuPanel = aMenuPanel;
+
+        this.interruption = true;
 
     }
 
     @Override
-    protected Void doInBackground() throws Exception {
+    protected Void doInBackground() {
         try {
             this.socket = new Socket("127.0.0.1", 10007);
 
@@ -65,35 +74,38 @@ public class ClientGame extends SwingWorker<Void, ChosenField> {
             this.board = new Board(sData);
             gameHandling = new LanGameHandling(sData, menuPanel, board, Player.SECOND, output, wFIC, input, serverSocket, socket);
             LanGameHandling.LOCK = false;
-            clientChooser.setVisible(false);
-            board.setVisible(true);
-            MainWindow.MAIN_PANEL.removeAll();
-            MainWindow.MAIN_PANEL.add(board);
-            MainWindow.MAIN_PANEL.revalidate();
-            MainWindow.MAIN_PANEL.repaint();
+            UsefulFeatures.update(board, menuPanel);
 
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Can not find game. Try later...");
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(menuPanel, "CLASS NOT FOUND EXCEPTION");
         }
         LanGameHandling.LOCK = false;
-        while (loopInterupted) {
+        while (interruption) {
 
-            this.input.readInt();
-            this.wFIC.setXCenter(this.input.readInt());
-            this.wFIC.setYCenter(this.input.readInt());
+            try {
+                this.input.readInt();
+                this.wFIC.setXCenter(this.input.readInt());
+                this.wFIC.setYCenter(this.input.readInt());
+                this.wFIC.setY(this.input.readInt());
+                this.wFIC.setX(this.input.readInt());
+                this.wFIC.setFill(this.input.readBoolean());
 
-            this.wFIC.setY(this.input.readInt());
-            this.wFIC.setX(this.input.readInt());
+                this.wFIC.setFillType((FillTypeField) this.input.readObject());
+                this.wFIC.setTypeOfField((TypeOfField) this.input.readObject());
 
-            this.wFIC.setFill(this.input.readBoolean());
+            } catch (IOException ex) {
+                break;
+            } catch (ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(menuPanel, "CLASS NOT FOUND EXCEPTION");
+                break;
+            }
 
-            this.wFIC.setFillType((FillTypeField) this.input.readObject());
-            this.wFIC.setTypeOfField((TypeOfField) this.input.readObject());
-
-            
             publish(wFIC);
 
         }
+
         return null;
 
     }
@@ -152,19 +164,20 @@ public class ClientGame extends SwingWorker<Void, ChosenField> {
                     choice = JOptionPane.showOptionDialog(board, "DRAW!!!", "DRAW", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                 }
                 if (choice == 0) {
-                    gameHandling.getGame().clearBoard();
                     this.sData.setFirstPlayerPoint(0);
                     this.sData.setSecondPlayerPoint(0);
-                    MainWindow.MAIN_PANEL.removeAll();
-                    MainWindow.MAIN_PANEL.add(board);
-                    MainWindow.MAIN_PANEL.repaint();
+                    if (board.isVisible()) {
+                        gameHandling.getGame().clearBoard();
+                        UsefulFeatures.update(board);
+                    }
+
                 } else if (choice == 2) {
                     try {
                         output.close();
                         input.close();
                         socket.close();
                     } catch (IOException ex) {
-                        Logger.getLogger(ClientGame.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(menuPanel, "The problem of closure socket or streams");
                     }
 
                     System.exit(0);
@@ -174,16 +187,13 @@ public class ClientGame extends SwingWorker<Void, ChosenField> {
                         input.close();
                         socket.close();
                     } catch (IOException ex) {
-                        Logger.getLogger(ClientGame.class.getName()).log(Level.SEVERE, null, ex);
+
+                        JOptionPane.showMessageDialog(menuPanel, "The problem of closure socket or streams");
                     }
                     gameHandling.getGame().clearBoard();
-                    menuPanel.setVisible(true);
-                    board.setVisible(false);
                     this.sData.setFirstPlayerPoint(0);
                     this.sData.setSecondPlayerPoint(0);
-                    MainWindow.MAIN_PANEL.removeAll();
-                    MainWindow.MAIN_PANEL.add(menuPanel);
-                    MainWindow.MAIN_PANEL.repaint();
+                    this.interruption = false;
 
                 }
 
@@ -192,10 +202,31 @@ public class ClientGame extends SwingWorker<Void, ChosenField> {
         }
     }
 
+    @Override
+    protected void done() {
+        try {
+            output.close();
+            input.close();
+            socket.close();
+
+            UsefulFeatures.update(menuPanel, board);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(menuPanel, "The problem of closure socket or streams");
+        }
+    }
+
+    /**
+     *
+     * @return stream output socket
+     */
     public ObjectOutputStream getOutput() {
         return this.output;
     }
 
+    /**
+     *
+     * @return board current game
+     */
     public Board getBoard() {
         return this.board;
     }

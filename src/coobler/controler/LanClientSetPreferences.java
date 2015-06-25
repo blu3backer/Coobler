@@ -8,18 +8,20 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 
 /**
+ * LanClientSetPreferences is a class which receives user input and call
+ * appropriate methods in order to chose user color and set user name and then
+ * join to the LAN game
  *
  * @author Dawid
  */
 public class LanClientSetPreferences implements MouseListener {
 
     private LanClientChooser lanClientChoser;
+
     private StoreData sData;
     private ClientGame clientGame;
     private MenuPanel menuPanel;
@@ -28,29 +30,28 @@ public class LanClientSetPreferences implements MouseListener {
     private ImageIcon joinButtonImage;
     private ImageIcon choseButtonEnteredImage;
     private ImageIcon joinButtonEnteredImage;
-    private ImageIcon choseButtonPressedImage;
-    private ImageIcon joinButtonPressedImage;
 
+    /**
+     * Creates a new instance of LanClientSetPreferences class
+     *
+     * @param aLanClientChoser instance of class which shows panel for selecting
+     * options for the game where user join to the lan game.
+     *
+     * @param aMenuPanel instance of class which shows panel which allows to
+     * choose appropriate game mode
+     */
     public LanClientSetPreferences(LanClientChooser aLanClientChoser, MenuPanel aMenuPanel) {
         this.lanClientChoser = aLanClientChoser;
         this.lanClientChoser.getColorChoserButton().addMouseListener(this);
         this.lanClientChoser.getJoinButton().addMouseListener(this);
-        this.sData = new StoreData(Color.BLACK, Color.WHITE,"UNNAMED2","UNNAMED");
+        this.sData = new StoreData(Color.BLACK, Color.WHITE, "UNNAMED2", "UNNAMED");
         this.menuPanel = aMenuPanel;
 
-        URL choseButtonURL = getClass().getResource("grph/choseButton.png");
-        URL joinButtonURL = getClass().getResource("grph/waitJoinButton.png");
-        URL choseButtonEnteredURL = getClass().getResource("grph/enteredChoseButton.png");
-        URL joinButtonEnteredURL = getClass().getResource("grph/waitJoinButtonEntered.png");
-        URL choseButtonPressedURL = getClass().getResource("grph/clickedChoseButton.png");
-        URL joinButtonPressedURL = getClass().getResource("grph/waitJoinButtonPressed.png");
-
-        choseButtonImage = new ImageIcon(choseButtonURL);
-        joinButtonImage = new ImageIcon(joinButtonURL);
-        choseButtonPressedImage = new ImageIcon(choseButtonPressedURL);
-        joinButtonPressedImage = new ImageIcon(joinButtonPressedURL);
-        choseButtonEnteredImage = new ImageIcon(choseButtonEnteredURL);
-        joinButtonEnteredImage = new ImageIcon(joinButtonEnteredURL);
+        this.choseButtonImage = this.changeImage("grph/choseButton.png");
+        this.joinButtonImage = this.changeImage("grph/waitJoinButton.png");
+        
+        this.choseButtonEnteredImage = this.changeImage("grph/enteredChoseButton.png");
+        this.joinButtonEnteredImage = this.changeImage("grph/waitJoinButtonEntered.png");
     }
 
     @Override
@@ -60,11 +61,6 @@ public class LanClientSetPreferences implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getSource() == this.lanClientChoser.getColorChoserButton()) {
-            this.lanClientChoser.getColorChoserButton().setIcon(choseButtonPressedImage);
-        } else if (e.getSource() == this.lanClientChoser.getJoinButton()) {
-            this.lanClientChoser.getJoinButton().setIcon(joinButtonPressedImage);
-        }
     }
 
     @Override
@@ -79,12 +75,7 @@ public class LanClientSetPreferences implements MouseListener {
             if (!this.lanClientChoser.getPlayerNameField().getText().equals("")) {
                 this.sData.setFirstNick(this.lanClientChoser.getPlayerNameField().getText());
             }
-            try {
-                clientGame = new ClientGame(lanClientChoser, sData, menuPanel);
-
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(LanClientSetPreferences.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            clientGame = new ClientGame(lanClientChoser, sData, menuPanel);
 
             this.clientGame.execute();
 
@@ -110,4 +101,14 @@ public class LanClientSetPreferences implements MouseListener {
         }
     }
 
+    /**
+     *
+     * @param path path of the desired resource
+     * @return ImageIcon contain image of button
+     */
+    public ImageIcon changeImage(String path) {
+        URL url = getClass().getResource(path);
+        ImageIcon image = new ImageIcon(url);
+        return image;
+    }
 }

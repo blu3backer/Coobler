@@ -5,8 +5,8 @@ import coobler.model.Game;
 import coobler.model.Player;
 import coobler.model.StoreData;
 import coobler.model.TypeOfField;
+import coobler.model.UsefulFeatures;
 import coobler.view.Board;
-import coobler.view.MainWindow;
 import coobler.view.MenuPanel;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -15,6 +15,9 @@ import java.awt.event.MouseListener;
 import javax.swing.JOptionPane;
 
 /**
+ * The GameHandling is a class which receives user input and call appropriate
+ * methods which change a board state. For this purpose implements MouseListener
+ * interface.
  *
  * @author Dawid
  */
@@ -28,6 +31,13 @@ public class GameHandling implements MouseListener {
 
     private boolean isTurn;
 
+    /**
+     * Creates a new instance of GameHandling
+     *
+     * @param storeData instance of StoreData class which stores date about game
+     * @param aBoard game board
+     * @param aMenu instance of class representing the main menu
+     */
     public GameHandling(StoreData storeData, Board aBoard, MenuPanel aMenu) {
 
         this.turn = Player.FIRST;
@@ -54,6 +64,7 @@ public class GameHandling implements MouseListener {
                 board.createPanels();
                 board.createLabelsScoreAndName();
                 board.repaint();
+                board.revalidate();
             }
 
             @Override
@@ -167,6 +178,7 @@ public class GameHandling implements MouseListener {
                             }
                         }
                         board.repaint();
+                        board.revalidate();
                     }
 
                 }
@@ -232,6 +244,7 @@ public class GameHandling implements MouseListener {
                             }
                         }
                         board.repaint();
+                        board.revalidate();
 
                     }
                 }
@@ -249,20 +262,14 @@ public class GameHandling implements MouseListener {
                         game.clearBoard();
                         this.sData.setFirstPlayerPoint(0);
                         this.sData.setSecondPlayerPoint(0);
-                        MainWindow.MAIN_PANEL.removeAll();
-                        MainWindow.MAIN_PANEL.add(board);
-                        MainWindow.MAIN_PANEL.repaint();
+                        UsefulFeatures.update(board);
                     } else if (choice == 2) {
                         System.exit(0);
                     } else {
                         game.clearBoard();
-                        menuPanel.setVisible(true);
-                        board.setVisible(false);
                         this.sData.setFirstPlayerPoint(0);
                         this.sData.setSecondPlayerPoint(0);
-                        MainWindow.MAIN_PANEL.removeAll();
-                        MainWindow.MAIN_PANEL.add(menuPanel);
-                        MainWindow.MAIN_PANEL.repaint();
+                        UsefulFeatures.update(menuPanel, board);
 
                     }
 

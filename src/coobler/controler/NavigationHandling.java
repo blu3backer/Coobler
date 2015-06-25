@@ -1,8 +1,8 @@
 package coobler.controler;
 
+import coobler.model.UsefulFeatures;
 import coobler.view.LanClientChooser;
 import coobler.view.LanServerChooser;
-import coobler.view.MainWindow;
 import coobler.view.MenuPanel;
 import coobler.view.MultiplayerChoser;
 import java.awt.event.MouseEvent;
@@ -11,6 +11,9 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 
 /**
+ * NavigationHandling is a class which receives user input and call method which
+ * begin selected new game mode.
+ *
  * @author Dawid
  */
 public class NavigationHandling implements MouseListener {
@@ -32,15 +35,15 @@ public class NavigationHandling implements MouseListener {
     private ImageIcon lanIcon;
     private ImageIcon exitIcon;
 
-    private ImageIcon joinPressedIcon;
-    private ImageIcon multiPressedIcon;
-    private ImageIcon lanPressedIcon;
-    private ImageIcon exitPressedIcon;
-
     private MultiplayerChoser multiChoser;
-
     private MultiplayerSetPreferences multiplyPreferences;
 
+    /**
+     * Creates a new instance of NavigationHandling class
+     *
+     * @param aMenuPane instance of class which shows panel which allows to
+     * choose appropriate game mode
+     */
     public NavigationHandling(MenuPanel aMenuPane) {
 
         this.menuPanel = aMenuPane;
@@ -57,32 +60,15 @@ public class NavigationHandling implements MouseListener {
         this.serverHandling = new LanServerSetPreferences(serverChoser, menuPanel);
 
         this.multiplyPreferences = new MultiplayerSetPreferences(multiChoser, menuPanel);
-        URL lanEnteredURL = getClass().getResource("grph/enteredLanButton.png");
-        this.lanEnteredIcon = new ImageIcon(lanEnteredURL);
-        URL joinEnteredURL = getClass().getResource("grph/enteredJoinButton.png");
-        this.joinEnteredIcon = new ImageIcon(joinEnteredURL);
-        URL multiEnteredURL = getClass().getResource("grph/enteredMultiButton.png");
-        this.multiEnteredIcon = new ImageIcon(multiEnteredURL);
-        URL exitEnteredURL = getClass().getResource("grph/enteredExitButton.png");
-        this.exitEnteredIcon = new ImageIcon(exitEnteredURL);
+        lanEnteredIcon = this.changeImage("grph/enteredLanButton.png");
+        joinEnteredIcon = this.changeImage("grph/enteredJoinButton.png");
+        multiEnteredIcon = this.changeImage("grph/enteredMultiButton.png");
+        exitEnteredIcon = this.changeImage("grph/enteredExitButton.png");
 
-        URL lanPressedURL = getClass().getResource("grph/clickedLanButton.png");
-        this.lanPressedIcon = new ImageIcon(lanPressedURL);
-        URL joinPressedURL = getClass().getResource("grph/clickedJoinButton.png");
-        this.joinPressedIcon = new ImageIcon(joinPressedURL);
-        URL multiPressedURL = getClass().getResource("grph/clickedMultiButton.png");
-        this.multiPressedIcon = new ImageIcon(multiPressedURL);
-        URL exitPressedURL = getClass().getResource("grph/clickedExitButton.png");
-        this.exitPressedIcon = new ImageIcon(exitPressedURL);
-
-        URL lanURL = getClass().getResource("grph/lanButton.png");
-        this.lanIcon = new ImageIcon(lanURL);
-        URL joinURL = getClass().getResource("grph/joinButton.png");
-        this.joinIcon = new ImageIcon(joinURL);
-        URL multiURL = getClass().getResource("grph/multiButton.png");
-        this.multiIcon = new ImageIcon(multiURL);
-        URL exitURL = getClass().getResource("grph/exitButton.png");
-        this.exitIcon = new ImageIcon(exitURL);
+        lanIcon = this.changeImage("grph/lanButton.png");
+        joinIcon = this.changeImage("grph/joinButton.png");
+        multiIcon = this.changeImage("grph/multiButton.png");
+        exitIcon = this.changeImage("grph/exitButton.png");
     }
 
     @Override
@@ -92,19 +78,6 @@ public class NavigationHandling implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getSource() == this.menuPanel.getJoinButton()) {
-            this.menuPanel.getJoinButton().setIcon(joinPressedIcon);
-        }
-        if (e.getSource() == this.menuPanel.getMultiPlayerButton()) {
-            this.menuPanel.getMultiPlayerButton().setIcon(multiPressedIcon);
-
-        }
-        if (e.getSource() == this.menuPanel.getLanModeButton()) {
-            this.menuPanel.getLanModeButton().setIcon(lanPressedIcon);
-        }
-        if (e.getSource() == this.menuPanel.getExitButton()) {
-            this.menuPanel.getExitButton().setIcon(exitPressedIcon);
-        }
 
     }
 
@@ -112,30 +85,16 @@ public class NavigationHandling implements MouseListener {
     public void mouseReleased(MouseEvent e) {
         if (e.getSource() == this.menuPanel.getJoinButton()) {
             this.menuPanel.getJoinButton().setIcon(joinIcon);
-
-            menuPanel.setVisible(false);
-            clientChoser.setVisible(true);
-            MainWindow.MAIN_PANEL.removeAll();
-            MainWindow.MAIN_PANEL.add(clientChoser);
-            MainWindow.MAIN_PANEL.repaint();
+            UsefulFeatures.update(clientChoser, menuPanel);
         }
         if (e.getSource() == this.menuPanel.getMultiPlayerButton()) {
             this.menuPanel.getMultiPlayerButton().setIcon(multiIcon);
-            menuPanel.setVisible(false);
-            multiChoser.setVisible(true);
-            MainWindow.MAIN_PANEL.removeAll();
-            MainWindow.MAIN_PANEL.add(multiChoser);
-            MainWindow.MAIN_PANEL.repaint();
+            UsefulFeatures.update(multiChoser, menuPanel);
 
         }
         if (e.getSource() == this.menuPanel.getLanModeButton()) {
             this.menuPanel.getLanModeButton().setIcon(lanIcon);
-
-            menuPanel.setVisible(false);
-            serverChoser.setVisible(true);
-            MainWindow.MAIN_PANEL.removeAll();
-            MainWindow.MAIN_PANEL.add(serverChoser);
-            MainWindow.MAIN_PANEL.repaint();
+            UsefulFeatures.update(serverChoser, menuPanel);
         }
         if (e.getSource() == this.menuPanel.getExitButton()) {
             this.menuPanel.getExitButton().setIcon(this.exitEnteredIcon);
@@ -173,6 +132,17 @@ public class NavigationHandling implements MouseListener {
         if (e.getSource() == this.menuPanel.getExitButton()) {
             this.menuPanel.getExitButton().setIcon(exitIcon);
         }
+    }
+
+    /**
+     *
+     * @param path path of the desired resource
+     * @return ImageIcon contain image of button
+     */
+    public final ImageIcon changeImage(String path) {
+        URL url = getClass().getResource(path);
+        ImageIcon image = new ImageIcon(url);
+        return image;
     }
 
 }

@@ -1,8 +1,8 @@
 package coobler.controler;
 
 import coobler.model.StoreData;
+import coobler.model.UsefulFeatures;
 import coobler.view.Board;
-import coobler.view.MainWindow;
 import coobler.view.MenuPanel;
 import coobler.view.MultiplayerChoser;
 import java.awt.Color;
@@ -13,6 +13,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 
 /**
+ * MultiplayerSetPreferences is a class which receives user input and call
+ * appropriate methods in order to chose user color and set user name for both
+ * players and then create new multiplayer game.
+ *
  * @author Dawid
  */
 public class MultiplayerSetPreferences implements MouseListener {
@@ -28,47 +32,35 @@ public class MultiplayerSetPreferences implements MouseListener {
     private ImageIcon secondChoseButtonIcon;
     private ImageIcon okButtonIcon;
 
-    private ImageIcon firstChoseButtonPressedIcon;
-    private ImageIcon secondChoseButtonPressedIcon;
-    private ImageIcon okButtonPressedIcon;
-
     private ImageIcon firstChoseButtonEnteredIcon;
     private ImageIcon secondChoseButtonEnteredIcon;
     private ImageIcon okButtonEnteredIcon;
 
+    /**
+     *
+     * @param aMultiChoser instance of class which shows panel for selecting
+     * options for the game where user join to the multiplayer game.
+     *
+     * @param aMenu instance of class which shows panel which allows to choose
+     * appropriate game mode
+     */
     public MultiplayerSetPreferences(MultiplayerChoser aMultiChoser, MenuPanel aMenu) {
 
         this.multiChoser = aMultiChoser;
         this.menuPanel = aMenu;
 
-        this.sData = new StoreData(Color.WHITE, Color.BLACK,"UNNAMED","UNNAMED2");
+        this.sData = new StoreData(Color.WHITE, Color.BLACK, "UNNAMED", "UNNAMED2");
         this.multiChoser.getFirstColorChoserButton().addMouseListener(this);
         this.multiChoser.getSecondColorChoserButton().addMouseListener(this);
         this.multiChoser.getOkButton().addMouseListener(this);
 
-        URL firstURL = getClass().getResource("grph/choseButton.png");
-        URL secondURL = getClass().getResource("grph/choseButton.png");
-        URL okURL = getClass().getResource("grph/okButton.png");
+        this.firstChoseButtonIcon = this.changeImage("grph/choseButton.png");
+        this.secondChoseButtonIcon = this.changeImage("grph/choseButton.png");
+        this.okButtonIcon = this.changeImage("grph/okButton.png");
 
-        firstChoseButtonIcon = new ImageIcon(firstURL);
-        secondChoseButtonIcon = new ImageIcon(secondURL);
-        okButtonIcon = new ImageIcon(okURL);
-
-        URL firstPressedURL = getClass().getResource("grph/clickedChoseButton.png");
-        URL secondPressedURL = getClass().getResource("grph/clickedChoseButton.png");
-        URL okPressedURL = getClass().getResource("grph/clickedOkButton.png");
-
-        firstChoseButtonPressedIcon = new ImageIcon(firstPressedURL);
-        secondChoseButtonPressedIcon = new ImageIcon(secondPressedURL);
-        okButtonPressedIcon = new ImageIcon(okPressedURL);
-
-        URL firstEnteredURL = getClass().getResource("grph/enteredChoseButton.png");
-        URL secondEnteredURL = getClass().getResource("grph/enteredChoseButton.png");
-        URL okEnteredURL = getClass().getResource("grph/enteredOkButton.png");
-
-        firstChoseButtonEnteredIcon = new ImageIcon(firstEnteredURL);
-        secondChoseButtonEnteredIcon = new ImageIcon(secondEnteredURL);
-        okButtonEnteredIcon = new ImageIcon(okEnteredURL);
+        this.firstChoseButtonEnteredIcon = this.changeImage("grph/enteredChoseButton.png");
+        this.secondChoseButtonEnteredIcon = this.changeImage("grph/enteredChoseButton.png");
+        this.okButtonEnteredIcon = this.changeImage("grph/enteredOkButton.png");
 
     }
 
@@ -79,16 +71,6 @@ public class MultiplayerSetPreferences implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getSource() == multiChoser.getFirstColorChoserButton()) {
-            multiChoser.getFirstColorChoserButton().setIcon(firstChoseButtonPressedIcon);
-
-        } else if (e.getSource() == multiChoser.getSecondColorChoserButton()) {
-            multiChoser.getSecondColorChoserButton().setIcon(secondChoseButtonPressedIcon);
-
-        } else if (e.getSource() == multiChoser.getOkButton()) {
-            multiChoser.getOkButton().setIcon(okButtonPressedIcon);
-
-        }
     }
 
     @Override
@@ -111,18 +93,13 @@ public class MultiplayerSetPreferences implements MouseListener {
                 sData.setSecondNick(multiChoser.getSecondPlayerNameField().getText());
             }
 
-            sData.setSizeBoard(multiChoser.getBoardSize().getSelectedIndex() + 4);
+            sData.setSizeBoard(multiChoser.getBoardSize().getSelectedIndex() + 3);
 
             this.board = new Board(sData);
             this.gameHandling = new GameHandling(sData, board, this.menuPanel);
             multiChoser.getOkButton().setIcon(okButtonIcon);
 
-            multiChoser.setVisible(false);
-            board.setVisible(true);
-
-            MainWindow.MAIN_PANEL.removeAll();
-            MainWindow.MAIN_PANEL.add(board);
-            MainWindow.MAIN_PANEL.repaint();
+            UsefulFeatures.update(board, multiChoser);
         }
     }
 
@@ -150,6 +127,17 @@ public class MultiplayerSetPreferences implements MouseListener {
         } else if (e.getSource() == multiChoser.getOkButton()) {
             multiChoser.getOkButton().setIcon(okButtonIcon);
         }
+    }
+
+    /**
+     *
+     * @param path path of the desired resource
+     * @return ImageIcon contain image of button
+     */
+    public final ImageIcon changeImage(String path) {
+        URL url = getClass().getResource(path);
+        ImageIcon image = new ImageIcon(url);
+        return image;
     }
 
 }

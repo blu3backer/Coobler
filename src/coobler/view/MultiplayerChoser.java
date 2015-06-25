@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
+ * 
+ * 
  * @author Dawid
  */
 public class MultiplayerChoser extends JPanel {
@@ -42,6 +44,9 @@ public class MultiplayerChoser extends JPanel {
     private JLabel secondNamePlayerLabel;
     private JLabel secondColorPlayerLabel;
 
+    /**
+     * Creates instance of MultiplayerChoser class 
+     */
     public MultiplayerChoser() {
         this.setLayout(new GridLayout(1, 1, 50, 50));
 
@@ -93,7 +98,7 @@ public class MultiplayerChoser extends JPanel {
         this.secondPlayerNameField.setFont(new Font("Arial", 1, 22));
 
         String[] boardsSize = {
-            "4x4", "5x5", "6x6", "7x7", "8x8"
+            "3x3","4x4", "5x5", "6x6", "7x7", "8x8", "9x9","10x10","11x11","12x12"
         };
         this.board = new JComboBox(boardsSize);
 
@@ -164,34 +169,66 @@ public class MultiplayerChoser extends JPanel {
 
     }
 
+    /**
+     * 
+     * @return JTextField which serves to the writing first player name
+     */
     public JTextField getFirstPlayerNameField() {
         return this.firstPlayerNameField;
     }
 
+    /**
+     * 
+     * @return JTextField which serves to the writing first player name
+     */
     public JTextField getSecondPlayerNameField() {
         return this.secondPlayerNameField;
     }
 
+    /**
+     * 
+     * @return JComboBox which allows chose board size
+     */
     public JComboBox getBoardSize() {
         return this.board;
     }
 
+    /**
+     * 
+     * @return JLabel which represents a button which calls a color choser for the first player
+     */
     public JLabel getFirstColorChoserButton() {
         return this.firstColorChoser;
     }
 
+    /**
+     * 
+     * @return JLabel which represents a button which calls a color choser for second player
+     */
     public JLabel getSecondColorChoserButton() {
         return this.secondColorChoser;
     }
 
+    /**
+     * 
+     * @return JLabel which represents a button which allows to starting the game
+     */
     public JLabel getOkButton() {
         return this.okButton;
     }
 
+    /**
+     * 
+     * @return label which shows current first player color 
+     */
     public JLabel getShowFirstColorChoserButton() {
         return this.firstShowColorChoser;
     }
 
+    /**
+     * 
+     * @return label which shows current second player color
+     */
     public JLabel getShowSecondColorChoserButton() {
         return this.secondShowColorChoser;
     }

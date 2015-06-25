@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
+ *Board class is a panel on which is displaying a game board  
  *
  * @author Dawid
  */
@@ -57,6 +58,11 @@ public class Board extends JPanel {
 
     private StoreData sData;
 
+    /**
+     * Creates a new instance of Board 
+     *
+     * @param storeData store data about player and size of board
+     */
     public Board(StoreData storeData) {
 
         setLayout(null);
@@ -92,16 +98,16 @@ public class Board extends JPanel {
 
                 this.horizontalField[i][j] = new JLabel();
                 this.horizontalField[i][j].setBorder(BorderFactory.createLineBorder(Color.WHITE));
-                this.horizontalField[i][j].setBackground(new Color(0, 49, 83));
+                this.horizontalField[i][j].setBackground(new Color(26,26,26));
                 this.horizontalField[i][j].setOpaque(true);
 
                 this.verticalField[i][j] = new JLabel();
                 this.verticalField[i][j].setBorder(BorderFactory.createLineBorder(Color.WHITE));
-                this.verticalField[i][j].setBackground(new Color(0, 49, 83));
+                this.verticalField[i][j].setBackground(new Color(26,26,26));
                 this.verticalField[i][j].setOpaque(true);
 
                 this.centerField[i][j] = new JLabel();
-                this.centerField[i][j].setBackground(new Color(0, 49, 83));
+                this.centerField[i][j].setBackground(new Color(26,26,26));
                 this.centerField[i][j].setOpaque(true);
 
                 this.cornerField[i][j] = new JLabel();
@@ -117,12 +123,12 @@ public class Board extends JPanel {
 
             this.horizontalField[Board.AMOUNT_FIELD][j] = new JLabel();
             this.horizontalField[Board.AMOUNT_FIELD][j].setBorder(BorderFactory.createLineBorder(Color.WHITE));
-            this.horizontalField[Board.AMOUNT_FIELD][j].setBackground(new Color(0, 49, 83));
+            this.horizontalField[Board.AMOUNT_FIELD][j].setBackground(new Color(26,26,26));
             this.horizontalField[Board.AMOUNT_FIELD][j].setOpaque(true);
 
             this.verticalField[j][Board.AMOUNT_FIELD] = new JLabel();
             this.verticalField[j][Board.AMOUNT_FIELD].setBorder(BorderFactory.createLineBorder(Color.WHITE));
-            this.verticalField[j][Board.AMOUNT_FIELD].setBackground(new Color(0, 49, 83));
+            this.verticalField[j][Board.AMOUNT_FIELD].setBackground(new Color(26,26,26));
             this.verticalField[j][Board.AMOUNT_FIELD].setOpaque(true);
 
             this.cornerField[Board.AMOUNT_FIELD][j] = new JLabel();
@@ -188,66 +194,113 @@ public class Board extends JPanel {
 
     }
 
+    /**
+     *
+     * @return first player name label
+     */
     public JLabel getFirstPlayerNameLabel() {
         return this.firstPlayerNameLabel;
     }
 
+    /**
+     *
+     * @return panel which is displaying first player avatar
+     */
     public JPanel getFirstUserIdentity() {
         return this.firstUserIdentify;
     }
 
+    /**
+     *
+     * @return first player avatar
+     */
     public JLabel getFirsAvatar() {
         return this.firstAvatar;
     }
 
+    /**
+     *
+     * @return second player avatar
+     */
     public JLabel getSecondAvatar() {
         return this.secondAvatar;
     }
 
+    /**
+     *
+     * @return label which is displaying result which first player is scored
+     */
     public JLabel getFirstPlayerScoreLabel() {
         return this.firstPlayerScoreLabel;
     }
 
+    /**
+     *
+     * @return label which is displaying result which second player is scored
+     */
     public JLabel getSecondPlayerNameLabel() {
         return this.secondPlayerNameLabel;
     }
 
+    /**
+     *
+     * @return panel which is displaying second player avatar
+     */
     public JPanel getSecondUserIdentity() {
         return this.secondUserIdentify;
     }
 
+    /**
+     *
+     * @return label which is displaying result which second player is scored
+     */
     public JLabel getSecondPlayerScoreLabel() {
         return this.secondPlayerScoreLabel;
     }
 
+    /**
+     *
+     * @return  panel which is displaying player data like result score and name player
+     */
     public JPanel getScorePanel() {
         return this.scorePanel;
     }
 
+    /**
+     *
+     * @return panel which is displaying game board
+     */
     public JPanel getBoardPanel() {
         return this.boardPanel;
     }
 
-    public int getAmountField() {
-        return this.AMOUNT_FIELD;
-    }
-
-    public JLabel[][] getCornerField() {
-        return this.cornerField;
-    }
-
+    /**
+     *
+     * @return center board field
+     */
     public JLabel[][] getCenterField() {
         return this.centerField;
     }
 
+    /**
+     *
+     * @return vertical board field
+     */
     public JLabel[][] getVerticalField() {
         return this.verticalField;
     }
 
+    /**
+     *
+     * @return horizontal board field
+     */
     public JLabel[][] getHorizontalField() {
         return this.horizontalField;
     }
 
+    /**
+     * This method create a new board when the window size changes
+     */
     public void createBoard() {
         int diference = Math.abs(Board.HEIGHT_BOARD_PANEL - Board.WIDTH_BOARD_PANEL);
 
@@ -274,6 +327,7 @@ public class Board extends JPanel {
 
         int x, y;
         int w, h;
+
         for (int i = 0; i < Board.AMOUNT_FIELD + 1; i++) {
             for (int j = 0; j < Board.AMOUNT_FIELD + 1; j++) {
 
@@ -329,6 +383,9 @@ public class Board extends JPanel {
         }
     }
 
+    /**
+     * This method create panel with results and names players when the window size changes
+     */
     public void createPanels() {
 
         this.firstPlayerScoreLabel.setBorder(BorderFactory.createLineBorder(this.sData.getFirstColor(), 2, false));

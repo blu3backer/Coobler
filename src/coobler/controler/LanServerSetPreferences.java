@@ -2,9 +2,9 @@ package coobler.controler;
 
 import coobler.model.ServerGame;
 import coobler.model.StoreData;
+import coobler.model.UsefulFeatures;
 import coobler.view.LanServerChooser;
 import coobler.view.LoadingView;
-import coobler.view.MainWindow;
 import coobler.view.MenuPanel;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -14,45 +14,45 @@ import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 
 /**
+ * LanServerSetPreferences is a class which receives user input and call
+ * appropriate methods in order to chose user color, set user name and chose
+ * size of board and then create the new LAN game
  *
  * @author Dawid
  */
 public class LanServerSetPreferences implements MouseListener {
 
-    private LanServerChooser lanServerChoser;
-    private LoadingView loadingView;
+    private final LanServerChooser lanServerChoser;
+    private final LoadingView loadingView;
     private ServerGame serverGame;
-    private StoreData sData;
-    private MenuPanel menuPanel;
+    private final StoreData sData;
+    private final MenuPanel menuPanel;
 
     private ImageIcon choseButtonImage;
     private ImageIcon startButtonImage;
     private ImageIcon choseButtonEnteredImage;
     private ImageIcon startButtonEnteredImage;
-    private ImageIcon choseButtonPressedImage;
-    private ImageIcon startButtonPressedImage;
 
+    /**
+     *
+     * @param aLanServerChoser instance of class which shows panel for selecting
+     * options for the game where user creting to the lan game.
+     *
+     * @param aMenuPanel instance of class which shows panel which allows to
+     * choose appropriate game mode
+     */
     public LanServerSetPreferences(LanServerChooser aLanServerChoser, MenuPanel aMenuPanel) {
         this.menuPanel = aMenuPanel;
         this.lanServerChoser = aLanServerChoser;
         this.loadingView = new LoadingView();
         this.lanServerChoser.getColorChoserButton().addMouseListener(this);
         this.lanServerChoser.getStartButton().addMouseListener(this);
-        sData = new StoreData(Color.WHITE, Color.BLACK,"UNNAMED","UNNAMED2");
+        sData = new StoreData(Color.WHITE, Color.BLACK, "UNNAMED", "UNNAMED2");
 
-        URL choseButtonURL = getClass().getResource("grph/choseButton.png");
-        URL startButtonURL = getClass().getResource("grph/startServerButton.png");
-        URL choseButtonEnteredURL = getClass().getResource("grph/enteredChoseButton.png");
-        URL startButtonEnteredURL = getClass().getResource("grph/startServerButtonEntered.png");
-        URL choseButtonPressedURL = getClass().getResource("grph/clickedChoseButton.png");
-        URL startButtonPressedURL = getClass().getResource("grph/startServerButtonPressed.png");
-
-        choseButtonImage = new ImageIcon(choseButtonURL);
-        startButtonImage = new ImageIcon(startButtonURL);
-        choseButtonPressedImage = new ImageIcon(choseButtonPressedURL);
-        startButtonPressedImage = new ImageIcon(startButtonPressedURL);
-        choseButtonEnteredImage = new ImageIcon(choseButtonEnteredURL);
-        startButtonEnteredImage = new ImageIcon(startButtonEnteredURL);
+        this.choseButtonImage = this.changeImage("grph/choseButton.png");
+        this.startButtonImage = this.changeImage("grph/startServerButton.png");
+        this.choseButtonEnteredImage = this.changeImage("grph/enteredChoseButton.png");
+        this.startButtonEnteredImage = this.changeImage("grph/startServerButtonEntered.png");
     }
 
     @Override
@@ -62,11 +62,6 @@ public class LanServerSetPreferences implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getSource() == this.lanServerChoser.getColorChoserButton()) {
-            this.lanServerChoser.getColorChoserButton().setIcon(choseButtonPressedImage);
-        } else if (e.getSource() == this.lanServerChoser.getStartButton()) {
-            this.lanServerChoser.getStartButton().setIcon(startButtonPressedImage);
-        }
     }
 
     @Override
@@ -82,17 +77,11 @@ public class LanServerSetPreferences implements MouseListener {
             if (!lanServerChoser.getPlayerNameField().getText().equals("")) {
                 sData.setFirstNick(lanServerChoser.getPlayerNameField().getText());
             }
-            sData.setSizeBoard(lanServerChoser.getSizeBoard().getSelectedIndex() + 4);
+            sData.setSizeBoard(lanServerChoser.getSizeBoard().getSelectedIndex() + 3);
             serverGame = new ServerGame(loadingView, sData, menuPanel);
             serverGame.execute();
 
-            lanServerChoser.setVisible(false);
-            this.loadingView.setVisible(true);
-
-            MainWindow.MAIN_PANEL.removeAll();
-            MainWindow.MAIN_PANEL.add(this.loadingView);
-            MainWindow.MAIN_PANEL.revalidate();
-            MainWindow.MAIN_PANEL.repaint();
+            UsefulFeatures.update(loadingView, lanServerChoser);
 
         }
     }
@@ -113,6 +102,17 @@ public class LanServerSetPreferences implements MouseListener {
         } else if (e.getSource() == this.lanServerChoser.getStartButton()) {
             this.lanServerChoser.getStartButton().setIcon(startButtonImage);
         }
+    }
+
+    /**
+     *
+     * @param path path of the desired resource
+     * @return ImageIcon contain image of button
+     */
+    public final ImageIcon changeImage(String path) {
+        URL url = getClass().getResource(path);
+        ImageIcon image = new ImageIcon(url);
+        return image;
     }
 
 }

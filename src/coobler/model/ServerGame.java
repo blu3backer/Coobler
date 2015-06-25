@@ -3,7 +3,6 @@ package coobler.model;
 import coobler.controler.LanGameHandling;
 import coobler.view.Board;
 import coobler.view.LoadingView;
-import coobler.view.MainWindow;
 import coobler.view.MenuPanel;
 import java.awt.Color;
 import java.io.BufferedInputStream;
@@ -13,12 +12,13 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 /**
+ * ServerGame class which handle incoming and outgoing data in LAN game on the
+ * side of the player who created the new game. This class extends SwingWorker
+ * class and work in other thread.
  *
  * @author Dawid
  */
@@ -38,66 +38,92 @@ public class ServerGame extends SwingWorker<Void, ChosenField> {
 
     private LanGameHandling gameHandling;
 
-    private boolean loopInterupted;
+    private boolean interruption;
 
+    /**
+     *
+     * @param aLoadingView the panel which simulates loading game
+     * @param storeData player data and size of board
+     * @param aMenuPanel main menu panel
+     */
     public ServerGame(LoadingView aLoadingView, StoreData storeData, MenuPanel aMenuPanel) {
         this.menuPanel = aMenuPanel;
         this.loadingView = aLoadingView;
         this.sData = storeData;
+        this.interruption = true;
 
         this.wFIC = new ChosenField();
-
-        this.loopInterupted = true;
     }
 
     @Override
-    public Void doInBackground() throws Exception {
+    public Void doInBackground() {
 
         try {
             server = new ServerSocket(10007);
         } catch (IOException ex) {
-            System.err.println("Error with created ServerSocket");
+            JOptionPane.showMessageDialog(menuPanel, "The problem of creation socket");
         }
 
         try {
             socket = server.accept();
         } catch (IOException ex) {
-            System.err.println("Error with client connected ");
+            JOptionPane.showMessageDialog(menuPanel, "No connection");
         }
 
-        this.output = new ObjectOutputStream(socket.getOutputStream());
-        this.input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+        try {
+            this.output = new ObjectOutputStream(socket.getOutputStream());
+            this.input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(menuPanel, "The problem with the creation streams");
+        }
 
-        this.output.writeObject(this.sData.getSizeBoard());
-        this.output.writeObject(this.sData.getFirstNick());
-        this.output.writeObject(this.sData.getFirstColor());
+        try {
+            this.output.writeObject(this.sData.getSizeBoard());
+            this.output.writeObject(this.sData.getFirstNick());
+            this.output.writeObject(this.sData.getFirstColor());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(menuPanel, "The problem with sending data");
+        }
 
-        this.sData.setSecondNick((String) this.input.readObject());
-        this.sData.setSecondColor((Color) this.input.readObject());
+        try {
+            this.sData.setSecondNick((String) this.input.readObject());
+            this.sData.setSecondColor((Color) this.input.readObject());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(menuPanel, "The problem with geting data");
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(menuPanel, "CLASS NOT FOUND EXCEPTION");
+        }
+
         this.board = new Board(sData);
         gameHandling = new LanGameHandling(sData, menuPanel, board, Player.SECOND, output, wFIC, input, server, socket);
-        this.loadingView.setVisible(false);
-        board.setVisible(true);
+
         LanGameHandling.LOCK = true;
+        UsefulFeatures.update(board, loadingView);
+        while (true) {
 
-        MainWindow.MAIN_PANEL.removeAll();
-        MainWindow.MAIN_PANEL.add(board);
-        MainWindow.MAIN_PANEL.revalidate();
-        MainWindow.MAIN_PANEL.repaint();
-        while (loopInterupted) {
+            try {
+                this.input.readInt();
+            } catch (IOException ex) {
 
-            this.input.readInt();
+                break;
+            }
 
-            this.wFIC.setXCenter(this.input.readInt());
-            this.wFIC.setYCenter(this.input.readInt());
+            try {
 
-            this.wFIC.setY(this.input.readInt());
-            this.wFIC.setX(this.input.readInt());
+                this.wFIC.setXCenter(this.input.readInt());
+                this.wFIC.setYCenter(this.input.readInt());
+                this.wFIC.setY(this.input.readInt());
+                this.wFIC.setX(this.input.readInt());
+                this.wFIC.setFill(this.input.readBoolean());
+                this.wFIC.setFillType((FillTypeField) this.input.readObject());
+                this.wFIC.setTypeOfField((TypeOfField) this.input.readObject());
 
-            this.wFIC.setFill(this.input.readBoolean());
-
-            this.wFIC.setFillType((FillTypeField) this.input.readObject());
-            this.wFIC.setTypeOfField((TypeOfField) this.input.readObject());
+            } catch (IOException ex) {
+                break;
+            } catch (ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(menuPanel, "CLASS NOT FOUND EXCEPTION");
+                break;
+            }
 
             publish(wFIC);
 
@@ -159,12 +185,13 @@ public class ServerGame extends SwingWorker<Void, ChosenField> {
                     choice = JOptionPane.showOptionDialog(board, "DRAW!!!", "DRAW", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                 }
                 if (choice == 0) {
-                    gameHandling.getGame().clearBoard();
                     this.sData.setFirstPlayerPoint(0);
-                    this.sData.setSecondPlayerPoint(0);
-                    MainWindow.MAIN_PANEL.removeAll();
-                    MainWindow.MAIN_PANEL.add(board);
-                    MainWindow.MAIN_PANEL.repaint();
+                        this.sData.setSecondPlayerPoint(0);
+                    if (board.isVisible()) {
+                        gameHandling.getGame().clearBoard();                        
+                        UsefulFeatures.update(board);
+                    }
+
                 } else if (choice == 2) {
                     try {
                         output.close();
@@ -172,7 +199,7 @@ public class ServerGame extends SwingWorker<Void, ChosenField> {
                         server.close();
                         socket.close();
                     } catch (IOException ex) {
-                        Logger.getLogger(ServerGame.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(menuPanel, "The problem of closure sockets or streams");
                     }
 
                     System.exit(0);
@@ -183,36 +210,60 @@ public class ServerGame extends SwingWorker<Void, ChosenField> {
                         server.close();
                         socket.close();
                     } catch (IOException ex) {
-                        Logger.getLogger(ServerGame.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(menuPanel, "The problem of closure sockets or streams");
                     }
 
                     gameHandling.getGame().clearBoard();
-                    menuPanel.setVisible(true);
-                    board.setVisible(false);
                     this.sData.setFirstPlayerPoint(0);
                     this.sData.setSecondPlayerPoint(0);
-                    MainWindow.MAIN_PANEL.removeAll();
-                    MainWindow.MAIN_PANEL.add(menuPanel);
-                    MainWindow.MAIN_PANEL.repaint();
-
+                    this.interruption = false;
                 }
 
             }
         }
     }
 
+    @Override
+    protected void done() {
+        try {
+            output.close();
+            input.close();
+            server.close();
+            socket.close();
+            UsefulFeatures.update(menuPanel, board);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(menuPanel, "The problem of closure socket or streams");
+        }
+    }
+
+    /**
+     *
+     * @return stream output socket
+     */
     public ObjectOutputStream getOutput() {
         return this.output;
     }
 
+    /**
+     *
+     * @return stream input socket
+     */
     public ObjectInputStream getInput() {
         return this.input;
     }
 
+    /**
+     *
+     * @return socket
+     */
     public Socket getSocket() {
         return this.socket;
     }
 
+    /**
+     *
+     * @return current board
+     */
     public Board getBoard() {
         return this.board;
     }
